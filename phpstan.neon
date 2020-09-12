@@ -1,0 +1,4 @@
+parameters:
+    level: 0
+    symfony:
+        container_xml_path: '%rootDir%/../../../var/cache/dev/srcApp_KernelDevDebugContainer.xml'
