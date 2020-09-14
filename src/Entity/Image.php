@@ -15,38 +15,26 @@ class Image
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $trick_id;
+	private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
      */
-    private $alt_image;
+	private ?string $alt_image;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $image_name;
+	private ?string $image_name;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=trick::class, inversedBy="images")
+     */
+	private ?trick $trick_id;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTrickId(): ?int
-    {
-        return $this->trick_id;
-    }
-
-    public function setTrickId(int $trick_id): self
-    {
-        $this->trick_id = $trick_id;
-
-        return $this;
     }
 
     public function getAltImage(): ?string
@@ -69,6 +57,18 @@ class Image
     public function setImageName(string $image_name): self
     {
         $this->image_name = $image_name;
+
+        return $this;
+    }
+
+    public function getTrickId(): ?trick
+    {
+        return $this->trick_id;
+    }
+
+    public function setTrickId(?trick $trick_id): self
+    {
+        $this->trick_id = $trick_id;
 
         return $this;
     }
