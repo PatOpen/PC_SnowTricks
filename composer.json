@@ -5,6 +5,7 @@
         "php": "^7.4.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-intl": "*",
         "composer/package-versions-deprecated": "1.10.99.1",
         "doctrine/annotations": "^1.0",
         "doctrine/doctrine-bundle": "^2.1",
@@ -38,6 +39,8 @@
         "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^3.3",
+        "fzaninotto/faker": "^1.9",
         "phpstan/extension-installer": "^1.0",
         "phpstan/phpstan-symfony": "^0.12.7",
         "symfony/browser-kit": "^4.4",

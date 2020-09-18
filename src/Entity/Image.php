@@ -28,9 +28,9 @@ class Image
 	private ?string $image_name;
 
     /**
-     * @ORM\ManyToOne(targetEntity=trick::class, inversedBy="images")
+     * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="images")
      */
-	private ?trick $trick_id;
+	private ?Trick $trick;
 
     public function getId(): ?int
     {
@@ -61,14 +61,14 @@ class Image
         return $this;
     }
 
-    public function getTrickId(): ?trick
+    public function getTrick(): ?Trick
     {
-        return $this->trick_id;
+        return $this->trick;
     }
 
-    public function setTrickId(?trick $trick_id): self
+    public function setTrick(?Trick $trick): self
     {
-        $this->trick_id = $trick_id;
+        $this->trick = $trick;
 
         return $this;
     }

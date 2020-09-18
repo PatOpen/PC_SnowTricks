@@ -9,11 +9,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
 	/**
-	 * @Route("/inscription", name="security_registration")
+	 * @Route("/inscription", name="registration")
 	 *
 	 * @param Request $request
 	 * @param UserPasswordEncoderInterface $encoder
@@ -36,7 +37,7 @@ class SecurityController extends AbstractController
 			$manager->persist( $user );
 			$manager->flush();
 
-			return $this->redirectToRoute( 'security_login' );
+			return $this->redirectToRoute( 'login' );
 		}
 
 		return $this->render( 'security/registration.html.twig', [
@@ -45,17 +46,24 @@ class SecurityController extends AbstractController
 	}
 
 	/**
-	 * @Route("/connexion", name="security_login")
+	 * @Route("/connexion", name="login")
+	 *
+	 * @param AuthenticationUtils $authentication_utils
 	 *
 	 * @return Response
 	 */
-	public function login()
+	public function login(AuthenticationUtils $authentication_utils)
 	{
-		return $this->render( 'security/login.html.twig' );
+		$error = $authentication_utils->getLastAuthenticationError();
+		$lastUsername = $authentication_utils->getLastUsername();
+		return $this->render( 'security/login.html.twig', [
+			'last_username' => $lastUsername,
+			'error' => $error
+		] );
 	}
 
 	/**
-	 * @Route("/deconnexion", name="security_logout")
+	 * @Route("/deconnexion", name="logout")
 	 */
 	public function logout()
 	{

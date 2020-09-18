@@ -5,7 +5,10 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use DateTime;
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -16,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity(fields={"pseudo"}, message="Ce pseudo existe déja !")
  * @UniqueEntity(fields={"email"}, message="Cet email existe déja !")
  */
-class User implements UserInterface
+class User implements UserInterface, Serializable
 {
     /**
      * @ORM\Id()
@@ -68,9 +71,21 @@ class User implements UserInterface
      */
 	private ?string $avatar;
 
+	/**
+	 * @ORM\OneToMany(targetEntity=Trick::class, mappedBy="user")
+	 */
+	private Collection $tricks;
+
+	/**
+	 * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="user")
+	 */
+	private Collection $comments;
+
 	public function __construct()
 	{
 		$this->create_at = new DateTime( 'now' );
+		$this->tricks    = new ArrayCollection();
+		$this->comments    = new ArrayCollection();
 	}
 
 	public function getId(): ?int
@@ -180,6 +195,7 @@ class User implements UserInterface
 
 	public function getSalt()
 	{
+		return null;
 	}
 
 	public function getUsername()
@@ -193,6 +209,32 @@ class User implements UserInterface
 
 	public function getRoles()
 	{
-		return ['ROLE_USER'];
+		return ['ROLE_ADMIN'];
+	}
+
+	public function serialize()
+	{
+		return serialize([
+			$this->id,
+			$this->pseudo,
+			$this->firstname,
+			$this->lastname,
+			$this->email,
+			$this->password,
+			$this->avatar
+		]);
+	}
+
+	public function unserialize( $serialized )
+	{
+		list(
+			$this->id,
+			$this->pseudo,
+			$this->firstname,
+			$this->lastname,
+			$this->email,
+			$this->password,
+			$this->avatar
+			) = unserialize($serialized, ['allowed_classes' => false]);
 	}
 }
