@@ -1,0 +1,9 @@
+<h1>Activation de votre compte</h1>
+
+<p>Bonjour {{ user.pseudo }}</p>
+
+<p>Votre nom d'utilisateur est {{ user.email }}</p>
+
+<p>Veuillez cliquer sur le lien pour l'activer !</p>
+
+<p><a href="{{ absolute_url(path('activation', {'token': user.token})) }}">Activer votre compte</a></p>

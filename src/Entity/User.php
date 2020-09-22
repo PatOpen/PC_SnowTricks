@@ -5,51 +5,54 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use DateTime;
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository", repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
  * @UniqueEntity(fields={"pseudo"}, message="Ce pseudo existe déja !")
  * @UniqueEntity(fields={"email"}, message="Cet email existe déja !")
  */
-class User implements UserInterface
+class User implements UserInterface, Serializable
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+	/**
+	 * @ORM\Id()
+	 * @ORM\GeneratedValue()
+	 * @ORM\Column(type="integer")
+	 */
 	private ?int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+	/**
+	 * @ORM\Column(type="string", length=255)
+	 */
 	private ?string $pseudo;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+	/**
+	 * @ORM\Column(type="string", length=255, nullable=true)
+	 */
 	private ?string $firstname;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+	/**
+	 * @ORM\Column(type="string", length=255, nullable=true)
+	 */
 	private ?string $lastname;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Email()
-     */
+	/**
+	 * @ORM\Column(type="string", length=255)
+	 * @Assert\Email()
+	 */
 	private ?string $email;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min="4", minMessage="Votre mot de passe doit contenir minimum 4 caractères")
-     */
+	/**
+	 * @ORM\Column(type="string", length=255)
+	 * @Assert\Length(min="4", minMessage="Votre mot de passe doit contenir minimum 4 caractères")
+	 */
 	private ?string $password;
 
 	/**
@@ -58,109 +61,131 @@ class User implements UserInterface
 	 */
 	private ?string $confirm_password;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+	/**
+	 * @ORM\Column(type="datetime")
+	 */
 	private ?DateTimeInterface $create_at;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+	/**
+	 * @ORM\Column(type="string", length=255, nullable=true)
+	 */
 	private ?string $avatar;
+
+	/**
+	 * @ORM\OneToMany(targetEntity=Trick::class, mappedBy="user")
+	 */
+	private Collection $tricks;
+
+	/**
+	 * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="user")
+	 */
+	private Collection $comments;
+
+	/**
+	 * @ORM\Column(type="json", nullable=true)
+	 */
+	private $roles = [];
+
+	/**
+	 * @ORM\Column(type="string", length=255, nullable=true)
+	 */
+	private $token;
 
 	public function __construct()
 	{
 		$this->create_at = new DateTime( 'now' );
+		$this->tricks    = new ArrayCollection();
+		$this->comments  = new ArrayCollection();
 	}
 
 	public function getId(): ?int
-    {
-        return $this->id;
-    }
+	{
+		return $this->id;
+	}
 
-    public function getPseudo(): ?string
-    {
-        return $this->pseudo;
-    }
+	public function getPseudo(): ?string
+	{
+		return $this->pseudo;
+	}
 
-    public function setPseudo(string $pseudo): self
-    {
-        $this->pseudo = $pseudo;
+	public function setPseudo( string $pseudo ): self
+	{
+		$this->pseudo = $pseudo;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getFirstname(): ?string
-    {
-        return $this->firstname;
-    }
+	public function getFirstname(): ?string
+	{
+		return $this->firstname;
+	}
 
-    public function setFirstname(?string $firstname): self
-    {
-        $this->firstname = $firstname;
+	public function setFirstname( ?string $firstname ): self
+	{
+		$this->firstname = $firstname;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getLastname(): ?string
-    {
-        return $this->lastname;
-    }
+	public function getLastname(): ?string
+	{
+		return $this->lastname;
+	}
 
-    public function setLastname(?string $lastname): self
-    {
-        $this->lastname = $lastname;
+	public function setLastname( ?string $lastname ): self
+	{
+		$this->lastname = $lastname;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
+	public function getEmail(): ?string
+	{
+		return $this->email;
+	}
 
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
+	public function setEmail( string $email ): self
+	{
+		$this->email = $email;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
+	public function getPassword(): ?string
+	{
+		return $this->password;
+	}
 
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
+	public function setPassword( string $password ): self
+	{
+		$this->password = $password;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getCreateAt(): ?DateTimeInterface
-    {
-        return $this->create_at;
-    }
+	public function getCreateAt(): ?DateTimeInterface
+	{
+		return $this->create_at;
+	}
 
-    public function setCreateAt( DateTimeInterface $create_at): self
-    {
-        $this->create_at = $create_at;
+	public function setCreateAt( DateTimeInterface $create_at ): self
+	{
+		$this->create_at = $create_at;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getAvatar(): ?string
-    {
-        return $this->avatar;
-    }
+	public function getAvatar(): ?string
+	{
+		return $this->avatar;
+	}
 
-    public function setAvatar(?string $avatar): self
-    {
-        $this->avatar = $avatar;
+	public function setAvatar( ?string $avatar ): self
+	{
+		$this->avatar = $avatar;
 
-        return $this;
-    }
+		return $this;
+	}
 
 	/**
 	 * @return string|null
@@ -180,6 +205,7 @@ class User implements UserInterface
 
 	public function getSalt()
 	{
+		return null;
 	}
 
 	public function getUsername()
@@ -193,6 +219,43 @@ class User implements UserInterface
 
 	public function getRoles()
 	{
-		return ['ROLE_USER'];
+		return [ 'ROLE_ADMIN' ];
+	}
+
+	public function serialize()
+	{
+		return serialize( [
+			$this->id,
+			$this->pseudo,
+			$this->firstname,
+			$this->lastname,
+			$this->email,
+			$this->password,
+			$this->avatar
+		] );
+	}
+
+	public function unserialize( $serialized )
+	{
+		list( $this->id, $this->pseudo, $this->firstname, $this->lastname, $this->email, $this->password, $this->avatar ) = unserialize( $serialized, [ 'allowed_classes' => false ] );
+	}
+
+	public function setRoles( ?array $roles ): self
+	{
+		$this->roles = $roles;
+
+		return $this;
+	}
+
+	public function getToken(): ?string
+	{
+		return $this->token;
+	}
+
+	public function setToken( ?string $token ): self
+	{
+		$this->token = $token;
+
+		return $this;
 	}
 }
