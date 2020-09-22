@@ -6,7 +6,7 @@ use App\Repository\VideoRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=VideoRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\VideoRepository", repositoryClass=VideoRepository::class)
  */
 class Video
 {
@@ -15,38 +15,26 @@ class Video
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $trick_id;
+	private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
      */
-    private $alt_video;
+	private ?string $alt_video;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $url_video;
+	private ?string $url_video;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=trick::class, inversedBy="videos")
+     */
+	private ?trick $trick_id;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTrickId(): ?int
-    {
-        return $this->trick_id;
-    }
-
-    public function setTrickId(int $trick_id): self
-    {
-        $this->trick_id = $trick_id;
-
-        return $this;
     }
 
     public function getAltVideo(): ?string
@@ -69,6 +57,18 @@ class Video
     public function setUrlVideo(string $url_video): self
     {
         $this->url_video = $url_video;
+
+        return $this;
+    }
+
+    public function getTrickId(): ?trick
+    {
+        return $this->trick_id;
+    }
+
+    public function setTrickId(?trick $trick_id): self
+    {
+        $this->trick_id = $trick_id;
 
         return $this;
     }

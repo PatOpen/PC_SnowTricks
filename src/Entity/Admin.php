@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\AdminRepository;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -15,46 +16,34 @@ class Admin
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $user_id;
+	private ?int $id;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $create_at;
+	private ?DateTimeInterface $create_at;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $role;
+	private ?string $role;
+
+    /**
+     * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
+     */
+	private ?User $user_id;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUserId(): ?int
-    {
-        return $this->user_id;
-    }
-
-    public function setUserId(int $user_id): self
-    {
-        $this->user_id = $user_id;
-
-        return $this;
-    }
-
-    public function getCreateAt(): ?\DateTimeInterface
+    public function getCreateAt(): ?DateTimeInterface
     {
         return $this->create_at;
     }
 
-    public function setCreateAt(\DateTimeInterface $create_at): self
+    public function setCreateAt( DateTimeInterface $create_at): self
     {
         $this->create_at = $create_at;
 
@@ -69,6 +58,18 @@ class Admin
     public function setRole(string $role): self
     {
         $this->role = $role;
+
+        return $this;
+    }
+
+    public function getUserId(): ?User
+    {
+        return $this->user_id;
+    }
+
+    public function setUserId(?User $user_id): self
+    {
+        $this->user_id = $user_id;
 
         return $this;
     }
