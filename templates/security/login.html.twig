@@ -2,7 +2,18 @@
 
 {% block title %}Connexion{% endblock %}
 
+{% block Masthead %}
+
+    {% include ('layout/header.html.twig') %}
+
+{% endblock %}
+
 {% block body %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
     {% if error %}
         <div class="container errors">
             <div class="alert alert-danger text-center">{{ error.messageKey | trans(error.messageData, 'security') }}</div>

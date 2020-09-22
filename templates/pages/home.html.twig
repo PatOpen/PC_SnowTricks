@@ -2,7 +2,18 @@
 
 {% block title %}Accueil{% endblock %}
 
+{% block Masthead %}
+
+    {% include ('layout/header.html.twig') %}
+
+{% endblock %}
+
 {% block body  %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
 
     <section class="page-section bg-light" id="trick">
         <div class="container">
@@ -20,18 +31,18 @@
                                 <div class="trick-hover">
                                     <div class="trick-hover-content"><i class="fas fa-plus fa-3x"></i></div>
                                 </div>
-                                <img class="img-fluid" src="{% if trick.images is empty %}{{ asset('assets/img/snow-default.jpg') }}{% else %}{{ asset('uploads/trick/' ~ trick.images.get('image_name')) }}{% endif %}" alt="" />
+                                <img class="img-fluid" src="{% if trick.images is empty %}{{ asset('assets/img/snow-default.jpg') }}{% else %}{{ asset('uploads/trick/' ~ trick.images.0.imageName) }}{% endif %}" alt="" />
                             </a>
                             <div class="trick-caption">
-                                <div class="trick-caption-heading"><a href="{{ path('trick.show', {id: trick.id}) }}">{{ trick.title }}</a></div>
+                                <div class="trick-caption-heading"><a href="{{ path('trick.show', {id: trick.id}) }}">{{ trick.title }}</a></div><hr>
                                 {% if app.user %}
-                                    <span class="span-icon" data-toggle="tooltip" data-placement="top" title="Modifier la figure">
+                                    <span class="span-icon" id="modifier">
                                     <a href="{{ path('admin.trick.edit', {id: trick.id}) }}">
                                         <i class="far fa-edit"></i>
                                     </a>
                                     </span>
-                                        <span class="span-icon" data-toggle="tooltip" data-placement="top" title="Supprimer la figure">
-                                        <a href="{{ path('admin.trick.delete', {id: trick.id}) }}" onclick="return confirm('Voulez-vous vraiment supprimer ce commentaire ?')">
+                                        <span class="span-icon" id="supprimer">
+                                        <a href="{{ path('admin.trick.delete', {id: trick.id}) }}" onclick="return confirm('Voulez-vous vraiment supprimer cette figure ?')">
                                             <i class="fas fa-trash-alt"></i>
                                         </a>
                                     </span>

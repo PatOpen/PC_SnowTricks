@@ -2,6 +2,12 @@
 
 {% block title %}Inscription{% endblock %}
 
+{% block Masthead %}
+
+    {% include ('layout/header.html.twig') %}
+
+{% endblock %}
+
 {% block body %}
 
     <section class="page-section" id="connect">
@@ -11,6 +17,7 @@
             </div>
 
             {{ form_start(form, {'attr': {'id': 'contactForm'}}) }}
+            {{ form_errors(form) }}
             <div class="row align-items-stretch mb-5 justify-content-center">
                 <div class="col-md-6">
                     <div class="form-group">

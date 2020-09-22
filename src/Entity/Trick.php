@@ -224,6 +224,11 @@ class Trick
          		return $this->comments;
          	}
 
+	/**
+	 * @param Comment $comment
+	 *
+	 * @return $this
+	 */
 	public function addComment( Comment $comment ): self
          	{
          		if ( ! $this->comments->contains( $comment ) )

@@ -16,6 +16,7 @@
     <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic" rel="stylesheet"
           type="text/css"/>
     <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet"/>
 </head>
 
@@ -35,11 +36,12 @@
             <ul class="navbar-nav text-uppercase ml-auto">
                 <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{{ path('home') }}">Accueil</a></li>
                 <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{{ path('home') }}#trick">Figures</a></li>
-                <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{{ path('registration') }}#connect">S'enregistrer</a></li>
                 {% if not app.user %}
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{{ path('registration') }}#connect">S'enregistrer</a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{{ path('login') }}#connect">Connexion</a>
                     </li>
                 {% else %}
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#">Mon compte</a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{{ path('logout') }}">Déconnexion</a>
                     </li>
                 {% endif %}
@@ -47,21 +49,14 @@
         </div>
     </div>
 </nav>
-<!-- Masthead-->
-<header class="masthead">
-    <div class="container">
-        <div class="masthead-subheading">Bienvenue sur SnowTrick</div>
-        <div class="masthead-heading text-uppercase">La référence des figures de snowboard</div>
 
-    </div>
-    <a class="js-scroll-trigger" href="#trick"><i class="fas fa-arrow-down fa-3x"></i></a>
-</header>
+{% block Masthead %}{% endblock %}
 
 {% block body %}{% endblock %}
 
 <div class="row d-flex justify-content-end fixed-bottom fleche-up">
     <span class="">
-        <a class="js-scroll-trigger " href="#trick"><i class="fas fa-arrow-up fa-3x"></i></a>
+        <a class="js-scroll-trigger" href="#trick" id="backTop"><i class="fas fa-arrow-up fa-3x"></i></a>
     </span>
 </div>
 <footer class="footer py-4">
@@ -81,10 +76,16 @@
     </div>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+{#<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>#}
 <script src="{{ asset('js/scripts.js') }}"></script>
+<script src="{{ asset('js/app.js') }}"></script>
+
+
 {% block javascripts %}{% endblock %}
 </body>
 </html>

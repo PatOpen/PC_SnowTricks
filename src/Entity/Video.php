@@ -18,11 +18,6 @@ class Video
 	private ?int $id;
 
     /**
-     * @ORM\Column(type="string", length=100, nullable=true)
-     */
-	private ?string $alt_video;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
 	private ?string $url_video;
@@ -37,23 +32,16 @@ class Video
         return $this->id;
     }
 
-    public function getAltVideo(): ?string
-    {
-        return $this->alt_video;
-    }
-
-    public function setAltVideo(?string $alt_video): self
-    {
-        $this->alt_video = $alt_video;
-
-        return $this;
-    }
-
     public function getUrlVideo(): ?string
     {
         return $this->url_video;
     }
 
+	/**
+	 * @param string $url_video
+	 *
+	 * @return $this
+	 */
     public function setUrlVideo(string $url_video): self
     {
         $this->url_video = $url_video;

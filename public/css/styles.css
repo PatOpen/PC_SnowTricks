@@ -66,6 +66,10 @@ html {
     margin: 4px;
 }
 
+.button-change-image{
+  margin: 20px;
+}
+
 .fa-edit{
   color: #1e7e34;
   font-size: 1.5em;
@@ -3742,8 +3746,8 @@ input[type=button].btn-block {
 .custom-file-input[disabled] ~ .custom-file-label, .custom-file-input:disabled ~ .custom-file-label {
   background-color: #e9ecef;
 }
-.custom-file-input:lang(en) ~ .custom-file-label::after {
-  content: "Browse";
+.custom-file-input:lang(fr) ~ .custom-file-label::after {
+  content: "Choisir";
 }
 .custom-file-input ~ .custom-file-label[data-browse]::after {
   content: attr(data-browse);
@@ -4377,7 +4381,12 @@ input[type=button].btn-block {
   color: #fff;
 }
 
+div.card{
+  margin: 2px;
+}
+
 .card {
+
   position: relative;
   display: flex;
   flex-direction: column;
@@ -9959,6 +9968,7 @@ img::-moz-selection {
     margin-right: 0;
   }
 }
+
 header.masthead {
   padding-top: 10.5rem;
   padding-bottom: 6rem;
