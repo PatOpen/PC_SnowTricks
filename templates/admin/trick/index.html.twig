@@ -2,7 +2,7 @@
 
 {% block title %}Admin - figure{% endblock %}{% block Masthead %}
 
-    {% include ('layout/header.html.twig') %}
+    {% include ('layout/header-change-image.html.twig') %}
 
 {% endblock %}
 
@@ -24,7 +24,7 @@
                 <tr>
                     <td>{{ trick.title }}</td>
                     <td>
-                        <a href="{{ path('admin.trick.edit', {id: trick.id}) }}#connect" class="btn btn-secondary">Modifier</a>
+                        <a href="{{ path('admin.trick.edit', {id: trick.id}) }}" class="btn btn-secondary">Modifier</a>
                         <a href="{{ path('admin.trick.delete', {id: trick.id}) }}" class="btn btn-danger">Supprimer</a>
                     </td>
                 </tr>

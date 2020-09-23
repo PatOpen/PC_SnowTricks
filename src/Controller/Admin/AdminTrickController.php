@@ -65,18 +65,18 @@ class AdminTrickController extends AbstractController
 
 		if ($form->isSubmitted() && $form->isValid()){
 			$videoUrl = $form->get('videos')->getData();
-			$videoId = explode('=', $videoUrl);
-			$videoName = $videoId[1];
 
-			$trick->addVideo($video->setUrlVideo($videoName));
+			if (empty($videoUrl)){
+				$videoId = explode('=', $videoUrl);
+				$videoName = $videoId[1];
+				$trick->addVideo($video->setUrlVideo($videoName));
+			}
 
 			$imageFile = $form->get('image')->getData();
 
 			if ($imageFile){
-				foreach ($imageFile as $imageFiles){
-					$imageFilename = $image_uploader->upload($imageFiles);
-					$trick->addImage($image->setImageName($imageFilename));
-				}
+				$imageFilename = $image_uploader->upload($imageFile);
+				$trick->addImage($image->setImageName($imageFilename));
 			}
 
 			$manager = $this->getDoctrine()->getManager();
@@ -86,7 +86,7 @@ class AdminTrickController extends AbstractController
 
 			$this->addFlash('success', 'Les modifications ont bien été pris en compte');
 
-			return $this->redirectToRoute('admin.trick.index');
+			return $this->redirectToRoute('home');
 		}
 
 		return $this->render('admin/trick/new.html.twig', [
@@ -133,7 +133,7 @@ class AdminTrickController extends AbstractController
 
 			$this->getDoctrine()->getManager()->flush();
 
-			$this->addFlash('success', 'L\'image a bien été ajouté !');
+			$this->addFlash('success', 'Les modifications ont bien été pris en compte !');
 
 
 			return $this->render('admin/trick/edit.html.twig', [

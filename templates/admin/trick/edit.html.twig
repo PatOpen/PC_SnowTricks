@@ -82,25 +82,39 @@
             </div>
             <hr>
         </div>
-        <div class="container card-contact">
-            <div class="row align-items-stretch mb-5 justify-content-center">
+        <hr>
+        <div class="container">
+            <div class="row justify-content-left">
                 <div class="col-md-6">
                     <div class="form-group">
                         {{ form_row(form.title, {'attr': {'class': 'form-control'}}) }}
                     </div>
+                </div>
+                <div class="col-md-12">
                     <div class="form-group">
-                        {{ form_row(form.description, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_row(form.description, {'attr': {'class': 'form-control', 'rows': '10'}}) }}
                     </div>
+                </div>
+                <div class="col-md-4">
                     <div class="form-group">
                         {{ form_row(form.category, {'attr': {'class': 'form-control'}}) }}
                     </div>
-
-                    <div class="text-center">
-                        <button class="btn btn-primary btn-xl text-uppercase" type="submit">Enregistrer</button>
-                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-end">
+                {% if is_granted('ROLE_ADMIN') %}
+                <div class="button-change-image col-auto">
+                    <a href="{{ path('admin.trick.delete', {id: trick.id}) }}" type="button" class="btn btn-danger btn-sm text-uppercase" onclick="return confirm('Voulez-vous vraiment supprimer cette figure ?')">
+                        Supprimer
+                    </a>
+                </div>
+                {% endif %}
+                <div class="button-change-image col-auto">
+                    <button class="btn btn-primary btn-sm text-uppercase" type="submit">Enregistrer</button>
                 </div>
             </div>
             {{ form_end(form) }}
+
 
         </div>
         <hr>

@@ -22,15 +22,29 @@ class TrickRepository extends ServiceEntityRepository
 	/**
 	 * Récupère toutes les figures.
 	 *
+	 * @param $start
+	 * @param $end
+	 *
 	 * @return Trick[]
 	 */
-    public function findAllTrick(): array
+    public function trickPagination(int $start,int $end): array
     {
     	return $this->createQueryBuilder('t')
+		    ->setFirstResult($start)
+		    ->setMaxResults($end)
 		    ->orderBy('t.create_at', 'DESC')
 		    ->getQuery()
 		    ->getResult()
 		    ;
+    }
+
+    public function numberTotalTricks()
+    {
+    	return $this->createQueryBuilder('t')
+    	    ->select('count(t)')
+	        ->getQuery()
+		    ->getSingleScalarResult();
+
     }
 
     // /**

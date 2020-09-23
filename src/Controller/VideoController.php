@@ -38,7 +38,7 @@ class VideoController extends AbstractController
 
 			$this->getDoctrine()->getManager()->flush();
 
-			$this->addFlash('success', 'L\'image a bien été ajouté !');
+			$this->addFlash('success', 'La vidéo a bien été ajouté !');
 			return $this->redirectToRoute('admin.trick.edit', ['id' => $slug]);
 		}
 
@@ -63,7 +63,7 @@ class VideoController extends AbstractController
 		$manager->remove($video);
 		$manager->flush();
 
-		$this->addFlash('success', 'L\'image a bien été supprimé !');
+		$this->addFlash('success', 'La vidéo a bien été supprimé !');
 
 		return $this->redirectToRoute('admin.trick.edit', ['id' => $slug]);
 	}
