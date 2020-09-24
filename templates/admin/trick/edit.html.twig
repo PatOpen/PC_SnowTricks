@@ -14,8 +14,16 @@
             {{ message }}
         </div>
     {% endfor %}
+    {% for message in app.flashes('errors') %}
+        <div class="alert alert-danger text-center">
+            {{ message }}
+        </div>
+    {% endfor %}
     {# <button class="btn display-medias" data-action="show-medias">Afficher les photos & videos</button> #}
     <section class="page-section bg-light" id="trick">
+        <div class="container text-center">
+            <h1 class="section-heading text-uppercase">Modifier un figure</h1><hr>
+        </div>
         <div class="container">
             <div class="row justify-content-center">
                 {% if trick.images %}
@@ -67,7 +75,10 @@
             <hr>
 
             {{ form_start(form) }}
-            {{ form_errors(form) }}
+            <div class="">
+                {{ form_errors(form) }}
+            </div>
+
             <div class="form-group">
                 {{ form_row(form.videos) }}
             </div>

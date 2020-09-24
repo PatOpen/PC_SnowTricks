@@ -17,8 +17,11 @@
     {# <button class="btn display-medias" data-action="show-medias">Afficher les photos & videos</button> #}
     <section class="page-section bg-light" id="trick">
         <div class="container">
+            <div class="container text-center">
+                <h1 class="section-heading text-uppercase">Créer une figure</h1><hr>
+            </div>
             {{ form_start(form) }}
-            {{ form_errors(form) }}
+            {{ form_errors(form, {'attr': {'class': 'p-3 mb-2 bg-danger text-white'}}) }}
             <div class="form-group">
                 {{ form_row(form.videos) }}
             </div>

@@ -10,14 +10,14 @@
 
 {% block body %}
     {% for message in app.flashes('success') %}
-        <div class="alert alert-success">
+        <div class="alert alert-success text-center">
             {{ message }}
         </div>
     {% endfor %}
 {#    <button class="btn display-medias" data-action="show-medias">Afficher les photos & videos</button>#}
 <section class="page-section bg-light" id="trick">
     <div class="container">
-        <div class="row">
+        <div class="row justify-content-center">
             {% if trick.images %}
                 {% for image in trick.images %}
                 <div class="col-lg-4 col-sm-6 col-xs-12">
@@ -27,34 +27,88 @@
             {% endif %}
             {% if trick.videos %}
                 {% for video in trick.videos %}
-                    <iframe src="{{ 'https://www.youtube.com/embed/' ~ video.urlVideo }}" frameborder="0"
+                    <iframe src="{{ 'https://www.youtube.com/embed/' ~ video.urlVideo }}"
+                            seamless
                             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                            class="trick-video img-thumbnail"
+                            class="img-thumbnail embed-responsive-item"
                             allowfullscreen>
                     </iframe>
                 {% endfor %}
             {% endif %}
         </div>
         <hr>
-        <p>{{ trick.description | raw}}</p>
+        <p>{{ trick.description | raw | nl2br }}</p>
     </div>
-
-</section><hr>
-
-<section class="page-section bg-light" id="comment">
-    {% for comment in trick.comments %}
-        <div class="container">
-            <div class="row">
-                <div class="col-3">
-                    {{ comment.user.pseudo }} (<small>{{ comment.createAt | date('d/m/Y à H:i') }}</small>)
-                </div>
-                <div class="col">
-                    {{ comment.content | raw }}
+    <div class="container">
+        <div class="row text-center justify-content-center">
+            <div class="col-sm-{% if trick.modifiedAt %}3{% else %}4{% endif %}">
+                <div class="card">
+                    <div class="card-header">Catégorie</div>
+                    <div class="card-body">
+                        <h6 class="card-title">{{ trick.category.name }}</h6>
+                    </div>
                 </div>
             </div>
-            <hr>
-        </div>
+            <div class="col-sm-{% if trick.modifiedAt %}3{% else %}4{% endif %}">
+                <div class="card">
+                    <div class="card-header">Auteur</div>
+                    <div class="card-body">
+                        <h6 class="card-title">{{ trick.user.pseudo }}</h6>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-{% if trick.modifiedAt %}3{% else %}4{% endif %}">
+                <div class="card">
+                    <div class="card-header">Date de création</div>
+                    <div class="card-body">
+                        <time class="card-title">{{ trick.createAt | format_datetime(locale='fr') }}</time>
+                    </div>
+                </div>
+            </div>
+            {% if trick.modifiedAt %}
+                <div class="col-sm-3">
+                    <div class="card">
+                        <div class="card-header">Modifié le :</div>
+                        <div class="card-body">
+                            <time class="card-title">{{ trick.modifiedAt | format_datetime(locale='fr') }}</time>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div><hr>
+    </div>
+
+    {% if app.user %}
+        {% include('pages/comment-form.html.twig') %}
+    {% endif %}
+    <div class="container">
+    {% for comment in trick.comments %}
+
+            <div class="media">
+                <img src="{% if not comment.user.avatar %}{{ asset('uploads/avatars/user.png') }}{% else %}{{ comment.user.avatar }}{% endif %}" alt="{{ comment.user.pseudo }}" class="align-self-center mr-3 avatar">
+                <div class="media-body">
+                    <h5>{{ comment.user.pseudo }}</h5>
+                    <date><small>Ajouté le {{ comment.createAt | format_datetime(locale='fr') }}</small></date>
+                    {% if comment.modifiedAt %}<date><small>Modifié le {{ comment.modifiedAt | format_datetime(locale='fr') }}</small></date>{% endif %}
+                    <p>{{ comment.content | raw | nl2br }}</p>
+                </div>
+                {% if app.user == comment.user %}
+                    <span class="span-icon" id="modifier">
+                        <a href="{{ path('edit.comment', {id: comment.id, slug: trick.id}) }}#comment">
+                            <i class="far fa-edit"></i>
+                        </a>
+                    </span>
+                    <span class="span-icon" id="supprimer">
+                        <a href="{{ path('delete.comment', {id: comment.id, slug: trick.id}) }}"
+                           onclick="return confirm('Voulez-vous vraiment supprimer ce commentaire ?')">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </span>
+                {% endif %}
+            </div><hr>
+
     {% endfor %}
+    </div>
 </section>
 
 {% endblock %}

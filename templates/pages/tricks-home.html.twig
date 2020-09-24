@@ -5,7 +5,7 @@
                 <div class="trick-hover">
                     <div class="trick-hover-content"><i class="fas fa-plus fa-3x"></i></div>
                 </div>
-                <img class="img-fluid"
+                <img class="img-trick-home"
                      src="{% if trick.images is empty %}{{ asset('assets/img/snow-default.jpg') }}{% else %}{{ asset('uploads/trick/' ~ trick.images.0.imageName) }}{% endif %}"
                      alt="{% if trick.images is empty %}Image figure snowboard{% else %}{{ trick.images.0.altImage }}{% endif %}"/>
             </a>
@@ -16,7 +16,7 @@
                     </a>
                 </div>
                 <hr>
-                {% if app.user %}
+                {% if app.user == trick.user or is_granted('ROLE_ADMIN')%}
                     <span class="span-icon" id="modifier">
                         <a href="{{ path('admin.trick.edit', {id: trick.id}) }}">
                             <i class="far fa-edit"></i>

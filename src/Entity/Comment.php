@@ -37,7 +37,7 @@ class Comment
     /**
      * @ORM\Column(type="boolean")
      */
-	private ?bool $validation;
+	private ?bool $validation = false;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="comments")

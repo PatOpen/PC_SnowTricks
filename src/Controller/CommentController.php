@@ -1,0 +1,70 @@
+<?php
+
+
+namespace App\Controller;
+
+
+use App\Entity\Comment;
+use App\Form\CommentType;
+use DateTime;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+class CommentController extends AbstractController
+{
+	/**
+	 * @Route ("/commentaire/modifier/{id}-{slug}", name="edit.comment")
+	 * @IsGranted ("IS_AUTHENTICATED_FULLY")
+	 * @param Comment $comment
+	 * @param int $slug
+	 * @param Request $request
+	 *
+	 * @return Response
+	 */
+	public function editComment(Comment $comment, int $slug, Request $request)
+	{
+		$form = $this->createForm(CommentType::class, $comment);
+		$form->handleRequest($request);
+
+		if ($form->isSubmitted() && $form->isValid()){
+			$comment->setModifiedAt(new DateTime('now'));
+
+			$this->getDoctrine()->getManager()->flush();
+
+			$this->addFlash('success', 'Votre commentaire a bien été modifié !');
+
+			return $this->redirectToRoute('trick.show', ['id' => $slug]);
+		}
+
+		return $this->render( 'pages/comment-edit.html.twig',[
+			'comment' => $comment,
+			'form' => $form->createView()
+		]);
+	}
+
+	/**
+	 * @Route ("/commentaire/supprimer/{id}-{slug}", name="delete.comment")
+	 * @IsGranted ("IS_AUTHENTICATED_FULLY")
+	 *
+	 * @param Comment $comment
+	 *
+	 * @param int $slug
+	 *
+	 * @return RedirectResponse
+	 */
+	public function deleteComment(Comment $comment, int $slug)
+	{
+		$manager = $this->getDoctrine()->getManager();
+		$manager->remove($comment);
+		$manager->flush();
+
+		$this->addFlash('success', 'Le commentaire a bien été supprimé !');
+
+		return $this->redirectToRoute('trick.show', ['id' => $slug]);
+	}
+
+}

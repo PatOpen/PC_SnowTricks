@@ -9,6 +9,7 @@ use App\Entity\Video;
 use App\Form\TrickType;
 use App\Repository\TrickRepository;
 use App\Service\ImageUploader;
+use DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -130,6 +131,7 @@ class AdminTrickController extends AbstractController
 				$imageFilename = $image_uploader->upload($imageFile);
 				$trick->addImage($image->setImageName($imageFilename));
 			}
+			$trick->setModifiedAt(new DateTime( 'now' ));
 
 			$this->getDoctrine()->getManager()->flush();
 

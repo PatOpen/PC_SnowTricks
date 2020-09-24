@@ -8,9 +8,11 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=TrickRepository::class)
+ * @UniqueEntity(fields={"title"}, message="Ce titre existe déja !")
  */
 class Trick
 {
@@ -58,7 +60,8 @@ class Trick
 	private Collection $videos;
 
 	/**
-	 * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick", orphanRemoval=true)
+	 * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick", orphanRemoval=true, cascade={"persist", "remove"})
+	 * @ORM\OrderBy({"create_at"="DESC"})
 	 */
 	private Collection $comments;
 

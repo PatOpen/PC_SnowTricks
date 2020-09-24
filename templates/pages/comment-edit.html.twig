@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier un commentaire{% endblock %}
+
+{% block Masthead %}
+
+    {% include ('layout/header.html.twig') %}
+
+{% endblock %}
+
+{% block body %}
+    <section class="page-section bg-light" id="comment">
+        <div class="container text-center">
+            <h1 class="section-heading text-uppercase">Modifier un commentaire</h1><hr>
+        </div>
+
+    {% include('pages/comment-form.html.twig') %}
+    </section>
+{% endblock %}
