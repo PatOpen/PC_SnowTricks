@@ -14,10 +14,14 @@
             {{ message }}
         </div>
     {% endfor %}
-{#    <button class="btn display-medias" data-action="show-medias">Afficher les photos & videos</button>#}
+
 <section class="page-section bg-light" id="trick">
+
+    <div class="container text-center" id="div-media">
+        <button class="btn btn-primary" id="button-media">Afficher les médias</button><hr>
+    </div>
     <div class="container">
-        <div class="row justify-content-center">
+        <div class="row justify-content-center" id="media">
             {% if trick.images %}
                 {% for image in trick.images %}
                 <div class="col-lg-4 col-sm-6 col-xs-12">

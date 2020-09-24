@@ -19,16 +19,20 @@
             {{ message }}
         </div>
     {% endfor %}
-    {# <button class="btn display-medias" data-action="show-medias">Afficher les photos & videos</button> #}
+
     <section class="page-section bg-light" id="trick">
+
         <div class="container text-center">
             <h1 class="section-heading text-uppercase">Modifier un figure</h1><hr>
         </div>
+        <div class="container text-center" id="div-media">
+            <button class="btn btn-primary" id="button-media">Afficher les médias</button><hr>
+        </div>
         <div class="container">
-            <div class="row justify-content-center">
+            <div class="row justify-content-center" id="media" >
                 {% if trick.images %}
                     {% for image in trick.images %}
-                        <div class="card" style="width: 18rem;">
+                        <div class="card">
                             <img src="{{ asset('uploads/trick/' ~ image.imageName) }}" alt="{{ image.AltImage }}"
                                  class="card-img-top" width="280px" height="160px">
                             <div class="card-body d-flex justify-content-center">
@@ -49,7 +53,7 @@
                 {% endif %}
                 {% if trick.videos %}
                     {% for video in trick.videos %}
-                        <div class="card" style="width: 18rem;">
+                        <div class="card">
                             <iframe class="embed-responsive-item img-thumbnail"
                                     src="{{ 'https://www.youtube.com/embed/' ~ video.urlVideo }}"
                                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
@@ -71,8 +75,8 @@
                         </div>
                     {% endfor %}
                 {% endif %}
-            </div>
-            <hr>
+            </div><hr>
+
 
             {{ form_start(form) }}
             <div class="">
@@ -93,7 +97,7 @@
             </div>
             <hr>
         </div>
-        <hr>
+
         <div class="container">
             <div class="row justify-content-left">
                 <div class="col-md-6">

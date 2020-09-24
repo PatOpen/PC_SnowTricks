@@ -4125,6 +4125,10 @@ input[type=button].btn-block {
     padding-right: 0;
     padding-left: 0;
   }
+
+  #media{
+    display: none; !important;
+  }
 }
 @media (min-width: 576px) {
   .navbar-expand-sm {
@@ -6202,6 +6206,11 @@ button.bg-dark:focus {
 }
 
 @media (min-width: 576px) {
+  #div-media{
+    display: none !important;
+    visibility: hidden;
+  }
+
   .d-sm-none {
     display: none !important;
   }

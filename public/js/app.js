@@ -18,6 +18,10 @@
 
     loadPagination();
 
+    $('#button-media').click(function (){
+        $('#media').toggle("slow", "swing");
+    })
+
 })(jQuery);
 
 function loadPagination(){
@@ -61,9 +65,6 @@ function loadPagination(){
                     }, 300);
                 }
             });
-
-
-
         }, 1500);
     });
 }

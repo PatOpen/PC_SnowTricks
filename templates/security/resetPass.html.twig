@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mot de passe oublié{% endblock %}
+
+{% block Masthead %}
+
+    {% include ('layout/header.html.twig') %}
+
+{% endblock %}
+
+{% block body %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success text-center">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <section class="page-section" id="connect">
+        <div class="container card-contact">
+            <div class="row justify-content-center">
+                <h1 class="section-heading text-uppercase">Réinitialisation du mot de passe</h1>
+            </div>
+
+            <div class="row align-items-stretch mb-5 justify-content-center">
+                {{ form_start(form) }}
+                    <div class="form-group">
+                        {{ form_row(form.email, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                    <div class="text-center">
+                        <button class="btn btn-primary btn-sm text-uppercase" type="submit">Envoyer</button>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+
+
+
+

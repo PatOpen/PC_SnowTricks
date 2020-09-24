@@ -10,7 +10,17 @@
 
 {% block body %}
     {% for message in app.flashes('success') %}
-        <div class="alert alert-success">
+        <div class="alert alert-success text-center">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('danger') %}
+        <div class="alert alert-warning text-center">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('warning') %}
+        <div class="alert alert-warning text-center">
             {{ message }}
         </div>
     {% endfor %}
@@ -48,6 +58,9 @@
                 </div>
                 <div class="text-center">
                     <a href="{{ path('registration') }}#connect">Créer un compte</a>
+                </div>
+                <div class="text-center">
+                    <a href="{{ path('forgotten.pass') }}#connect">Mot de pass oublié ?</a>
                 </div>
             </form>
         </div>
