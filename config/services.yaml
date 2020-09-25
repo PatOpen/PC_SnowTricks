@@ -35,8 +35,8 @@ services:
 
     App\Service\ImageUploader:
         arguments:
-            $targetDirectory: '%kernel.project_dir%/public/uploads/trick'
+            $targetDirectory: '%images_directory%'
 
     App\Service\AvatarUploader:
         arguments:
-            $targetDirectory: '%kernel.project_dir%/public/uploads/avatars'
+            $avatarDirectory: '%avatars_directory%'

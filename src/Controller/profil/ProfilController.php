@@ -6,7 +6,7 @@ namespace App\Controller\profil;
 
 use App\Entity\User;
 use App\Form\ProfilType;
-use App\Service\AvatarUploader;
+use App\Service\ImageUploader;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,11 +22,11 @@ class ProfilController extends AbstractController
 	 *
 	 * @param User $user
 	 * @param Request $request
-	 * @param AvatarUploader $uploader
+	 * @param ImageUploader $uploader
 	 *
 	 * @return Response
 	 */
-	public function profil(User $user, Request $request, AvatarUploader $uploader)
+	public function profil(User $user, Request $request, ImageUploader $uploader)
 	{
 		$form = $this->createForm(ProfilType::class, $user);
 		$form->handleRequest($request);
@@ -36,6 +36,9 @@ class ProfilController extends AbstractController
 			$imageFile = $form->get('avatar')->getData();
 
 			if ($imageFile){
+				if ($imageFile !== $user->getAvatar()){
+					unlink($this->getParameter('images_directory').'/'.$user->getAvatar());
+				}
 				$imageName = $uploader->upload($imageFile);
 				$user->setAvatar($imageName);
 			}

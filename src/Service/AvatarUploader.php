@@ -9,11 +9,11 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class AvatarUploader
 {
-	private string $targetDirectory;
+	private string $avatarDirectory;
 
-	public function __construct( string $targetDirectory )
+	public function __construct( string $avatarDirectory)
 	{
-		$this->targetDirectory = $targetDirectory;
+		$this->avatarDirectory = $avatarDirectory;
 	}
 
 	/**
@@ -32,7 +32,7 @@ class AvatarUploader
 			$file->move( $this->getTargetDirectory(), $fileName );
 		} catch ( FileException $e )
 		{
-			// ... Gestion des exceptions en cas de soucis
+
 		}
 
 		return $fileName;
@@ -43,6 +43,6 @@ class AvatarUploader
 	 */
 	public function getTargetDirectory(): string
 	{
-		return $this->targetDirectory;
+		return $this->avatarDirectory;
 	}
 }

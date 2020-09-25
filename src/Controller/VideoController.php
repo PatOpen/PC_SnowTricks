@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class VideoController extends AbstractController
 {
 	/**
-	 * @Route ("/change-video/{slug}-{id}", name="change.video")
+	 * @Route ("/change-video/{id}-{slug}", name="change.video")
 	 * @IsGranted ("ROLE_USER")
 	 * @param $slug
 	 * @param Video $video
@@ -24,7 +24,7 @@ class VideoController extends AbstractController
 	 *
 	 * @return RedirectResponse|Response
 	 */
-	public function changeImage($slug, Video $video, Request $request)
+	public function changeImage(Video $video, $slug, Request $request)
 	{
 		$form = $this->createForm(VideoType::class, $video);
 		$form->handleRequest($request);
@@ -49,7 +49,7 @@ class VideoController extends AbstractController
 	}
 
 	/**
-	 * @Route("/delete-video/{slug}-{id}", name="delete.video")
+	 * @Route("/delete-video/{id}-{slug}", name="delete.video")
 	 * @IsGranted ("ROLE_USER")
 	 * @param $slug
 	 *
@@ -57,7 +57,7 @@ class VideoController extends AbstractController
 	 *
 	 * @return RedirectResponse
 	 */
-	public function deleteImage($slug, Video $video)
+	public function deleteImage(Video $video, $slug)
 	{
 		$manager = $this->getDoctrine()->getManager();
 		$manager->remove($video);

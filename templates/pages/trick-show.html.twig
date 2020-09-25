@@ -89,7 +89,7 @@
     {% for comment in trick.comments %}
 
             <div class="media">
-                <img src="{% if not comment.user.avatar %}{{ asset('uploads/avatars/user.png') }}{% else %}{{ asset('uploads/avatars/' ~ comment.user.avatar) }}{% endif %}" alt="{{ comment.user.pseudo }}" class="align-self-center mr-3 avatar">
+                <img src="{% if not comment.user.avatar %}{{ asset('uploads/avatars/user.png') }}{% else %}{{ asset('uploads/trick/' ~ comment.user.avatar) }}{% endif %}" alt="{{ comment.user.pseudo }}" class="align-self-center mr-3 avatar">
                 <div class="media-body">
                     <h5>{{ comment.user.pseudo }}</h5>
                     <date><small>Ajouté le {{ comment.createAt | format_datetime(locale='fr') }}</small></date>
