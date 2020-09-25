@@ -89,7 +89,7 @@
     {% for comment in trick.comments %}
 
             <div class="media">
-                <img src="{% if not comment.user.avatar %}{{ asset('uploads/avatars/user.png') }}{% else %}{{ comment.user.avatar }}{% endif %}" alt="{{ comment.user.pseudo }}" class="align-self-center mr-3 avatar">
+                <img src="{% if not comment.user.avatar %}{{ asset('uploads/avatars/user.png') }}{% else %}{{ asset('uploads/avatars/' ~ comment.user.avatar) }}{% endif %}" alt="{{ comment.user.pseudo }}" class="align-self-center mr-3 avatar">
                 <div class="media-body">
                     <h5>{{ comment.user.pseudo }}</h5>
                     <date><small>Ajouté le {{ comment.createAt | format_datetime(locale='fr') }}</small></date>
@@ -98,12 +98,12 @@
                 </div>
                 {% if app.user == comment.user %}
                     <span class="span-icon" id="modifier">
-                        <a href="{{ path('edit.comment', {id: comment.id, slug: trick.id}) }}#comment">
+                        <a href="{{ path('edit.comment', {id: comment.id, slug: trick.slug}) }}#comment">
                             <i class="far fa-edit"></i>
                         </a>
                     </span>
                     <span class="span-icon" id="supprimer">
-                        <a href="{{ path('delete.comment', {id: comment.id, slug: trick.id}) }}"
+                        <a href="{{ path('delete.comment', {id: comment.id, slug: trick.slug}) }}"
                            onclick="return confirm('Voulez-vous vraiment supprimer ce commentaire ?')">
                             <i class="fas fa-trash-alt"></i>
                         </a>

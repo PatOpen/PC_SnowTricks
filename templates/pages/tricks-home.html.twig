@@ -1,7 +1,7 @@
 {% for trick in tricks %}
     <div class="col-lg-4 col-sm-6 mb-4">
         <div class="trick-item">
-            <a class="trick-link" href="{{ path('trick.show', {id: trick.id}) }}">
+            <a class="trick-link" href="{{ path('trick.show', {slug: trick.slug}) }}">
                 <div class="trick-hover">
                     <div class="trick-hover-content"><i class="fas fa-plus fa-3x"></i></div>
                 </div>
@@ -11,19 +11,19 @@
             </a>
             <div class="trick-caption">
                 <div class="trick-caption-heading">
-                    <a href="{{ path('trick.show', {id: trick.id}) }}">
+                    <a href="{{ path('trick.show', {slug: trick.slug}) }}">
                         {{ trick.title }}
                     </a>
                 </div>
                 <hr>
                 {% if app.user == trick.user or is_granted('ROLE_ADMIN')%}
                     <span class="span-icon" id="modifier">
-                        <a href="{{ path('admin.trick.edit', {id: trick.id}) }}">
+                        <a href="{{ path('trick.edit', {slug: trick.slug}) }}">
                             <i class="far fa-edit"></i>
                         </a>
                     </span>
                     <span class="span-icon" id="supprimer">
-                        <a href="{{ path('admin.trick.delete', {id: trick.id}) }}"
+                        <a href="{{ path('trick.delete', {slug: trick.slug}) }}"
                            onclick="return confirm('Voulez-vous vraiment supprimer cette figure ?')">
                             <i class="fas fa-trash-alt"></i>
                         </a>

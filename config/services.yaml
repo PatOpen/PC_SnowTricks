@@ -6,6 +6,7 @@
 parameters:
     locale: 'fr'
     images_directory: '%kernel.project_dir%/public/uploads/trick'
+    avatars_directory: '%kernel.project_dir%/public/uploads/avatars'
 
 services:
     # default configuration for services in *this* file
@@ -35,3 +36,7 @@ services:
     App\Service\ImageUploader:
         arguments:
             $targetDirectory: '%kernel.project_dir%/public/uploads/trick'
+
+    App\Service\AvatarUploader:
+        arguments:
+            $targetDirectory: '%kernel.project_dir%/public/uploads/avatars'

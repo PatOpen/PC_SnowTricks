@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class TrickController extends AbstractController
 {
 	/**
-	 * @Route ("/figure/{id}", name="trick.show")
+	 * @Route ("/figure/{slug}", name="trick.show")
 	 *
 	 * @param Trick $trick
 	 *
@@ -42,7 +42,7 @@ class TrickController extends AbstractController
 
 			$this->addFlash('success', 'Votre commentaire a bien été ajouté !');
 
-			return $this->redirectToRoute('trick.show', ['id' => $trick->getId()]);
+			return $this->redirectToRoute('trick.show', ['slug' => $trick->getSlug()]);
 		}
 
 		return $this->render( 'pages/trick-show.html.twig',[

@@ -20,12 +20,12 @@ class CommentController extends AbstractController
 	 * @Route ("/commentaire/modifier/{id}-{slug}", name="edit.comment")
 	 * @IsGranted ("IS_AUTHENTICATED_FULLY")
 	 * @param Comment $comment
-	 * @param int $slug
+	 * @param string $slug
 	 * @param Request $request
 	 *
 	 * @return Response
 	 */
-	public function editComment(Comment $comment, int $slug, Request $request)
+	public function editComment(Comment $comment, string $slug, Request $request)
 	{
 		$form = $this->createForm(CommentType::class, $comment);
 		$form->handleRequest($request);
@@ -37,7 +37,7 @@ class CommentController extends AbstractController
 
 			$this->addFlash('success', 'Votre commentaire a bien été modifié !');
 
-			return $this->redirectToRoute('trick.show', ['id' => $slug]);
+			return $this->redirectToRoute('trick.show', ['slug' => $slug]);
 		}
 
 		return $this->render( 'pages/comment-edit.html.twig',[
@@ -52,11 +52,11 @@ class CommentController extends AbstractController
 	 *
 	 * @param Comment $comment
 	 *
-	 * @param int $slug
+	 * @param string $slug
 	 *
 	 * @return RedirectResponse
 	 */
-	public function deleteComment(Comment $comment, int $slug)
+	public function deleteComment(Comment $comment, string $slug)
 	{
 		$manager = $this->getDoctrine()->getManager();
 		$manager->remove($comment);
@@ -64,7 +64,7 @@ class CommentController extends AbstractController
 
 		$this->addFlash('success', 'Le commentaire a bien été supprimé !');
 
-		return $this->redirectToRoute('trick.show', ['id' => $slug]);
+		return $this->redirectToRoute('trick.show', ['slug' => $slug]);
 	}
 
 }

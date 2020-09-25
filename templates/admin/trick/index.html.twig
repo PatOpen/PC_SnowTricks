@@ -24,8 +24,8 @@
                 <tr>
                     <td>{{ trick.title }}</td>
                     <td>
-                        <a href="{{ path('admin.trick.edit', {id: trick.id}) }}" class="btn btn-secondary">Modifier</a>
-                        <a href="{{ path('admin.trick.delete', {id: trick.id}) }}" class="btn btn-danger">Supprimer</a>
+                        <a href="{{ path('trick.edit', {slug: trick.slug}) }}" class="btn btn-secondary">Modifier</a>
+                        <a href="{{ path('trick.delete', {slug: trick.slug}) }}" class="btn btn-danger">Supprimer</a>
                     </td>
                 </tr>
             {% endfor %}

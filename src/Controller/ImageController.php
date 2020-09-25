@@ -46,7 +46,7 @@ class ImageController extends AbstractController
 			$this->getDoctrine()->getManager()->flush();
 
 			$this->addFlash('success', 'L\'image a bien été ajouté !');
-			return $this->redirectToRoute('admin.trick.edit', ['id' => $slug]);
+			return $this->redirectToRoute('trick.edit', ['slug' => $slug]);
 		}
 
 		return $this->render('pages/changeImage.html.twig', [
@@ -74,7 +74,7 @@ class ImageController extends AbstractController
 
 		$this->addFlash('success', 'L\'image a bien été supprimé !');
 
-		return $this->redirectToRoute('admin.trick.edit', ['id' => $slug]);
+		return $this->redirectToRoute('trick.edit', ['slug' => $slug]);
 	}
 
 }

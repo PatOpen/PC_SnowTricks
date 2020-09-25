@@ -41,7 +41,7 @@
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{{ path('login') }}#connect">Connexion</a>
                     </li>
                 {% else %}
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#">Mon compte</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{{ path('user.profil', {'pseudo': app.user.pseudo}) }}">Mon compte</a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{{ path('logout') }}">Déconnexion</a>
                     </li>
                 {% endif %}

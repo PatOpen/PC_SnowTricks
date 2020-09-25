@@ -48,7 +48,7 @@ class AdminTrickController extends AbstractController
 	/**
 	 * @IsGranted("ROLE_USER")
 	 *
-	 * @Route ("/admin/creer-figure", name="admin.trick.new")
+	 * @Route ("/creer-figure", name="trick.new")
 	 * @param Request $request
 	 *
 	 * @param ImageUploader $image_uploader
@@ -79,9 +79,9 @@ class AdminTrickController extends AbstractController
 				$imageFilename = $image_uploader->upload($imageFile);
 				$trick->addImage($image->setImageName($imageFilename));
 			}
+			$trick->setUser( $this->getUser());
 
 			$manager = $this->getDoctrine()->getManager();
-			$trick->setUser( $this->getUser());
 			$manager->persist($trick);
 			$manager->flush();
 
@@ -99,7 +99,7 @@ class AdminTrickController extends AbstractController
 	/**
 	 * @IsGranted("ROLE_USER")
 	 *
-	 * @Route("/admin/modifier-figure/{id}", name="admin.trick.edit")
+	 * @Route("/modifier-figure/{slug}", name="trick.edit")
 	 *
 	 *
 	 * @param Trick $trick
@@ -154,7 +154,7 @@ class AdminTrickController extends AbstractController
 	/**
 	 * @IsGranted("ROLE_USER")
 	 *
-	 * @Route ("/admin/delete/{id}", name="admin.trick.delete")
+	 * @Route ("/delete/{slug}", name="trick.delete")
 	 *
 	 * @param Trick $trick
 	 *
@@ -166,6 +166,6 @@ class AdminTrickController extends AbstractController
 		$manager->remove($trick);
 		$manager->flush();
 
-		return $this->redirectToRoute('admin.trick.index');
+		return $this->redirectToRoute('home');
 	}
 }

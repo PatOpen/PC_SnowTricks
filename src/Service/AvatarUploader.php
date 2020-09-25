@@ -7,7 +7,7 @@ namespace App\Service;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class ImageUploader
+class AvatarUploader
 {
 	private string $targetDirectory;
 
@@ -45,6 +45,4 @@ class ImageUploader
 	{
 		return $this->targetDirectory;
 	}
-
-
 }
