@@ -7,7 +7,9 @@ namespace App\Controller;
 use App\Entity\Comment;
 use App\Entity\Trick;
 use App\Form\CommentType;
+use App\Repository\CommentRepository;
 use App\Repository\TrickRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,9 +24,12 @@ class TrickController extends AbstractController
 	 *
 	 * @param Request $request
 	 *
+	 * @param CommentRepository $repository
+	 * @param PaginatorInterface $paginator
+	 *
 	 * @return Response
 	 */
-	public function show(Trick $trick, Request $request)
+	public function show(Trick $trick, Request $request, CommentRepository $repository, PaginatorInterface $paginator)
 	{
 		$comment = new Comment();
 
@@ -45,8 +50,16 @@ class TrickController extends AbstractController
 			return $this->redirectToRoute('trick.show', ['slug' => $trick->getSlug()]);
 		}
 
+		$comments = $paginator->paginate(
+			$repository->commentsForOneTrick($trick),
+			$request->query->getInt('page', 1),
+			9
+		);
+
+
 		return $this->render( 'pages/trick-show.html.twig',[
 			'trick' => $trick,
+			'comments' => $comments,
 			'form' => $form->createView()
 		]);
 	}

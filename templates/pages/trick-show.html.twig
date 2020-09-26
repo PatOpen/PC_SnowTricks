@@ -43,7 +43,7 @@
         <hr>
         <p>{{ trick.description | raw | nl2br }}</p>
     </div>
-    <div class="container">
+    <div class="container" id="comments">
         <div class="row text-center justify-content-center">
             <div class="col-sm-{% if trick.modifiedAt %}3{% else %}4{% endif %}">
                 <div class="card">
@@ -85,36 +85,23 @@
     {% if app.user %}
         {% include('pages/comment-form.html.twig') %}
     {% endif %}
+
     <div class="container">
-    {% for comment in trick.comments %}
 
-            <div class="media">
-                <img src="{% if not comment.user.avatar %}{{ asset('uploads/avatars/user.png') }}{% else %}{{ asset('uploads/trick/' ~ comment.user.avatar) }}{% endif %}" alt="{{ comment.user.pseudo }}" class="align-self-center mr-3 avatar">
-                <div class="media-body">
-                    <h5>{{ comment.user.pseudo }}</h5>
-                    <date><small>Ajouté le {{ comment.createAt | format_datetime(locale='fr') }}</small></date>
-                    {% if comment.modifiedAt %}<date><small>Modifié le {{ comment.modifiedAt | format_datetime(locale='fr') }}</small></date>{% endif %}
-                    <p>{{ comment.content | raw | nl2br }}</p>
-                </div>
-                {% if app.user == comment.user %}
-                    <span class="span-icon" id="modifier">
-                        <a href="{{ path('edit.comment', {id: comment.id, slug: trick.slug}) }}#comment">
-                            <i class="far fa-edit"></i>
-                        </a>
-                    </span>
-                    <span class="span-icon" id="supprimer">
-                        <a href="{{ path('delete.comment', {id: comment.id, slug: trick.slug}) }}"
-                           onclick="return confirm('Voulez-vous vraiment supprimer ce commentaire ?')">
-                            <i class="fas fa-trash-alt"></i>
-                        </a>
-                    </span>
-                {% endif %}
-            </div><hr>
+        {% include('pages/comments-show.html.twig') %}
+        <div class="row justify-content-center">
+        {{ knp_pagination_render(comments) }}
+        </div>
+        {#
+              <div class="loader-container col-sm-12 d-flex justify-content-center" id="loader">
+                    <button class="btn btn-outline-primary loader-btn">
+                        Voir plus <i class="fas fa-arrow-down"></i><i class="fa fa-spinner fa-pulse fa-fw"></i>
+                    </button>
+                </div>#}
 
-    {% endfor %}
     </div>
+
 </section>
 
 {% endblock %}
-
-
+{% block javascripts %}{% endblock %}

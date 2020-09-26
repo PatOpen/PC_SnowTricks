@@ -1,12 +1,25 @@
-/*!
-    * Start Bootstrap - Agency v6.0.2 (https://startbootstrap.com/template-overviews/agency)
-    * Copyright 2013-2020 Start Bootstrap
-    * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-agency/blob/master/LICENSE)
-    */
-    (function ($) {
-    "use strict"; // Start of use strict
+(function ($) {
+    "use strict";
 
-    // Smooth scrolling using jQuery easing
+    $('#button-media').click(function (){
+        $('#media').toggle("slow", "swing");
+    })
+
+    $('#backTop').hide();
+    $(window).scroll(function (){
+        $('#backTop').each(function () {
+            let topWindow = $(window).scrollTop();
+            if (topWindow > 800){
+                $('#backTop').show();
+            }else{
+                $('#backTop').hide();
+            }
+        })
+    });
+
+    $('span#modifier').tooltip({title: 'Modifier', placement: 'top', offset: '0 , 5'})
+    $('span#supprimer').tooltip({title: 'Supprimer', placement: 'top', offset: '0 , 5'})
+
     $('a.js-scroll-trigger[href*="#"]:not([href="#"])').click(function () {
         if (
             location.pathname.replace(/^\//, "") ===
@@ -49,8 +62,8 @@
                 $("#mainNav").removeClass("navbar-shrink");
             }
         };
-        // Collapse now if page is not at top
+
     navbarCollapse();
-    // Collapse the navbar when page is scrolled
+
     $(window).scroll(navbarCollapse);
 })(jQuery); // End of use strict
