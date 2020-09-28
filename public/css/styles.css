@@ -50,6 +50,10 @@
   box-sizing: border-box;
 }
 
+.arrow-masthead{
+  margin-top: 50px;
+}
+
 html {
   font-family: sans-serif;
   line-height: 1.15;
@@ -57,8 +61,11 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
-iframe{
+iframe.trick-video{
   border: 0;
+  width: 350px;
+  height: 225px;
+  margin: 20px auto auto;
 }
 
 .fleche-up{
@@ -212,6 +219,7 @@ a:not([href]) {
   color: inherit;
   text-decoration: none;
 }
+
 a:not([href]):hover {
   color: inherit;
   text-decoration: none;
@@ -230,6 +238,12 @@ pre {
   margin-bottom: 1rem;
   overflow: auto;
   -ms-overflow-style: scrollbar;
+}
+
+img.trick-image{
+  width: 350px;
+  height: 225px;
+  margin: 20px auto auto;
 }
 
 .img-trick-home{
@@ -10291,19 +10305,6 @@ header.masthead .masthead-heading {
   .timeline > li.timeline-inverted > .timeline-panel {
     padding: 0 100px 20px 20px;
   }
-}
-.team-member {
-  margin-bottom: 3rem;
-  text-align: center;
-}
-.team-member img {
-  width: 14rem;
-  height: 14rem;
-  border: 0.5rem solid rgba(0, 0, 0, 0.1);
-}
-.team-member h4 {
-  margin-top: 1.5rem;
-  margin-bottom: 0;
 }
 
 label{

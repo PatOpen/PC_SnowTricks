@@ -8,7 +8,7 @@
             {% if comment.modifiedAt %}<date><small>Modifié le {{ comment.modifiedAt | format_datetime(locale='fr') }}</small></date>{% endif %}
             <p>{{ comment.content | raw | nl2br }}</p>
         </div>
-        {% if app.user == comment.user %}
+        {% if app.user == comment.user or is_granted("ROLE_ADMIN")%}
             <span class="span-icon" id="modifier">
                 <a href="{{ path('edit.comment', {id: comment.id, slug: trick.slug}) }}#comment">
                     <i class="far fa-edit"></i>

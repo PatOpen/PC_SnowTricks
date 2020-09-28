@@ -9,6 +9,7 @@ use App\Entity\Video;
 use App\Form\TrickType;
 use App\Repository\TrickRepository;
 use App\Service\ImageUploader;
+use App\Service\SluggFast;
 use DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -65,6 +66,11 @@ class AdminTrickController extends AbstractController
 		$form->handleRequest($request);
 
 		if ($form->isSubmitted() && $form->isValid()){
+			$title = $form->get('title')->getData();
+			if ($title){
+				$trick->setSlug(SluggFast::slugify($title));
+			}
+
 			$videoUrl = $form->get('videos')->getData();
 
 			if (empty($videoUrl)){
@@ -112,11 +118,19 @@ class AdminTrickController extends AbstractController
 	{
 		$video = new Video();
 		$image = new Image();
+		$slug = $trick->getSlug();
 
 		$form = $this->createForm(TrickType::class, $trick);
 		$form->handleRequest($request);
 
 		if ($form->isSubmitted() && $form->isValid()){
+			$title = $form->get('title')->getData();
+			if ($title){
+				$slug = SluggFast::slugify($title);
+				$trick->setSlug($slug);
+			}
+
+
 			$videoUrl = $form->get('videos')->getData();
 			if ($videoUrl){
 				$videoId = explode('=', $videoUrl);
@@ -138,9 +152,8 @@ class AdminTrickController extends AbstractController
 			$this->addFlash('success', 'Les modifications ont bien été pris en compte !');
 
 
-			return $this->render('admin/trick/edit.html.twig', [
-				'trick' => $trick,
-				'form' => $form->createView()
+			return $this->redirectToRoute('trick.edit', [
+				'slug' => $slug
 			]);
 		}
 
