@@ -219,7 +219,10 @@ class User implements UserInterface, Serializable
 
 	public function getRoles()
 	{
-		return [ 'ROLE_ADMIN' ];
+		$roles = $this->roles;
+		$roles[] = 'ROLE_USER';
+
+		return array_unique($roles);
 	}
 
 	public function serialize()
@@ -231,13 +234,14 @@ class User implements UserInterface, Serializable
 			$this->lastname,
 			$this->email,
 			$this->password,
-			$this->avatar
+			$this->avatar,
+			$this->roles
 		] );
 	}
 
 	public function unserialize( $serialized )
 	{
-		list( $this->id, $this->pseudo, $this->firstname, $this->lastname, $this->email, $this->password, $this->avatar ) = unserialize( $serialized, [ 'allowed_classes' => false ] );
+		list( $this->id, $this->pseudo, $this->firstname, $this->lastname, $this->email, $this->password, $this->avatar, $this->roles ) = unserialize( $serialized, [ 'allowed_classes' => false ] );
 	}
 
 	public function setRoles( ?array $roles ): self

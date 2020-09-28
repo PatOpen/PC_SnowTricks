@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class VideoController extends AbstractController
 {
 	/**
-	 * @Route ("/change-video/{slug}-{id}", name="change.video")
+	 * @Route ("/change-video/{id}-{slug}", name="change.video")
 	 * @IsGranted ("ROLE_USER")
 	 * @param $slug
 	 * @param Video $video
@@ -24,7 +24,7 @@ class VideoController extends AbstractController
 	 *
 	 * @return RedirectResponse|Response
 	 */
-	public function changeImage($slug, Video $video, Request $request)
+	public function changeImage(Video $video, $slug, Request $request)
 	{
 		$form = $this->createForm(VideoType::class, $video);
 		$form->handleRequest($request);
@@ -38,8 +38,8 @@ class VideoController extends AbstractController
 
 			$this->getDoctrine()->getManager()->flush();
 
-			$this->addFlash('success', 'L\'image a bien été ajouté !');
-			return $this->redirectToRoute('admin.trick.edit', ['id' => $slug]);
+			$this->addFlash('success', 'La vidéo a bien été ajouté !');
+			return $this->redirectToRoute('trick.edit', ['slug' => $slug]);
 		}
 
 		return $this->render('pages/changeVideo.html.twig', [
@@ -49,7 +49,7 @@ class VideoController extends AbstractController
 	}
 
 	/**
-	 * @Route("/delete-video/{slug}-{id}", name="delete.video")
+	 * @Route("/delete-video/{id}-{slug}", name="delete.video")
 	 * @IsGranted ("ROLE_USER")
 	 * @param $slug
 	 *
@@ -57,15 +57,15 @@ class VideoController extends AbstractController
 	 *
 	 * @return RedirectResponse
 	 */
-	public function deleteImage($slug, Video $video)
+	public function deleteImage(Video $video, $slug)
 	{
 		$manager = $this->getDoctrine()->getManager();
 		$manager->remove($video);
 		$manager->flush();
 
-		$this->addFlash('success', 'L\'image a bien été supprimé !');
+		$this->addFlash('success', 'La vidéo a bien été supprimé !');
 
-		return $this->redirectToRoute('admin.trick.edit', ['id' => $slug]);
+		return $this->redirectToRoute('trick.edit', ['slug' => $slug]);
 	}
 
 

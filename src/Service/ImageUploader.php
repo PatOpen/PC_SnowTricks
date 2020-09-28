@@ -32,7 +32,7 @@ class ImageUploader
 			$file->move( $this->getTargetDirectory(), $fileName );
 		} catch ( FileException $e )
 		{
-			// ... Gestion des exception en cas de soucis
+			// ... Gestion des exceptions en cas de soucis
 		}
 
 		return $fileName;

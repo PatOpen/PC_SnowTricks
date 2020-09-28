@@ -18,42 +18,25 @@
     <section class="page-section bg-light" id="trick">
         <div class="container">
             <div class="text-center">
-                <h2 class="section-heading text-uppercase">Figures</h2>
+                <h1 class="section-heading text-uppercase">Figures</h1>
                 <h3 class="section-subheading text-muted">Figures de snowboard.</h3>
             </div>
 
-            <div class="row">
+            <div class="row div-tricks" data-number-tricks-pagination="{{ numberTricksPagination }}" data-url="/load-tricks/" data-total-tricks="{{ tricksTotal }}">
+                    {% include('pages/tricks-home.html.twig') %}
 
-                {% for trick in tricks %}
-                    <div class="col-lg-4 col-sm-6 mb-4">
-                        <div class="trick-item">
-                            <a class="trick-link" href="{{ path('trick.show', {id: trick.id}) }}">
-                                <div class="trick-hover">
-                                    <div class="trick-hover-content"><i class="fas fa-plus fa-3x"></i></div>
-                                </div>
-                                <img class="img-fluid" src="{% if trick.images is empty %}{{ asset('assets/img/snow-default.jpg') }}{% else %}{{ asset('uploads/trick/' ~ trick.images.0.imageName) }}{% endif %}" alt="" />
-                            </a>
-                            <div class="trick-caption">
-                                <div class="trick-caption-heading"><a href="{{ path('trick.show', {id: trick.id}) }}">{{ trick.title }}</a></div><hr>
-                                {% if app.user %}
-                                    <span class="span-icon" id="modifier">
-                                    <a href="{{ path('admin.trick.edit', {id: trick.id}) }}">
-                                        <i class="far fa-edit"></i>
-                                    </a>
-                                    </span>
-                                        <span class="span-icon" id="supprimer">
-                                        <a href="{{ path('admin.trick.delete', {id: trick.id}) }}" onclick="return confirm('Voulez-vous vraiment supprimer cette figure ?')">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </a>
-                                    </span>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-
+                <div class="loader-container col-sm-12 d-flex justify-content-center" id="loader">
+                    <button class="btn btn-outline-primary loader-btn">
+                        Voir plus <i class="fas fa-arrow-down"></i><i class="fa fa-spinner fa-pulse fa-fw"></i>
+                    </button>
+                </div>
             </div>
+
         </div>
     </section>
 
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/loadTtricks.js') }}"></script>
 {% endblock %}

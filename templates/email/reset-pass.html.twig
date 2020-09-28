@@ -1,0 +1,9 @@
+<h1>Réinitialisation de votre mot de passe</h1>
+
+<p>Bonjour {{ user.pseudo }}</p>
+
+<p>Vous avez demandé à réinitialisé votre mot de passe avec cette adresse mail : {{ user.email }}</p>
+
+<p>Veuillez cliquer sur le lien pour l'activer !</p>
+
+<a href="{{ absolute_url('/reset-pass/' ~ token) }}">Réinitialisation du mot de passe</a>

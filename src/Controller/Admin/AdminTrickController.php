@@ -9,6 +9,8 @@ use App\Entity\Video;
 use App\Form\TrickType;
 use App\Repository\TrickRepository;
 use App\Service\ImageUploader;
+use App\Service\SluggFast;
+use DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -47,7 +49,7 @@ class AdminTrickController extends AbstractController
 	/**
 	 * @IsGranted("ROLE_USER")
 	 *
-	 * @Route ("/admin/creer-figure", name="admin.trick.new")
+	 * @Route ("/creer-figure", name="trick.new")
 	 * @param Request $request
 	 *
 	 * @param ImageUploader $image_uploader
@@ -64,29 +66,34 @@ class AdminTrickController extends AbstractController
 		$form->handleRequest($request);
 
 		if ($form->isSubmitted() && $form->isValid()){
-			$videoUrl = $form->get('videos')->getData();
-			$videoId = explode('=', $videoUrl);
-			$videoName = $videoId[1];
+			$title = $form->get('title')->getData();
+			if ($title){
+				$trick->setSlug(SluggFast::slugify($title));
+			}
 
-			$trick->addVideo($video->setUrlVideo($videoName));
+			$videoUrl = $form->get('videos')->getData();
+
+			if (empty($videoUrl)){
+				$videoId = explode('=', $videoUrl);
+				$videoName = $videoId[1];
+				$trick->addVideo($video->setUrlVideo($videoName));
+			}
 
 			$imageFile = $form->get('image')->getData();
 
 			if ($imageFile){
-				foreach ($imageFile as $imageFiles){
-					$imageFilename = $image_uploader->upload($imageFiles);
-					$trick->addImage($image->setImageName($imageFilename));
-				}
+				$imageFilename = $image_uploader->upload($imageFile);
+				$trick->addImage($image->setImageName($imageFilename));
 			}
+			$trick->setUser( $this->getUser());
 
 			$manager = $this->getDoctrine()->getManager();
-			$trick->setUser( $this->getUser());
 			$manager->persist($trick);
 			$manager->flush();
 
 			$this->addFlash('success', 'Les modifications ont bien été pris en compte');
 
-			return $this->redirectToRoute('admin.trick.index');
+			return $this->redirectToRoute('home');
 		}
 
 		return $this->render('admin/trick/new.html.twig', [
@@ -98,7 +105,7 @@ class AdminTrickController extends AbstractController
 	/**
 	 * @IsGranted("ROLE_USER")
 	 *
-	 * @Route("/admin/modifier-figure/{id}", name="admin.trick.edit")
+	 * @Route("/modifier-figure/{slug}", name="trick.edit")
 	 *
 	 *
 	 * @param Trick $trick
@@ -111,11 +118,19 @@ class AdminTrickController extends AbstractController
 	{
 		$video = new Video();
 		$image = new Image();
+		$slug = $trick->getSlug();
 
 		$form = $this->createForm(TrickType::class, $trick);
 		$form->handleRequest($request);
 
 		if ($form->isSubmitted() && $form->isValid()){
+			$title = $form->get('title')->getData();
+			if ($title){
+				$slug = SluggFast::slugify($title);
+				$trick->setSlug($slug);
+			}
+
+
 			$videoUrl = $form->get('videos')->getData();
 			if ($videoUrl){
 				$videoId = explode('=', $videoUrl);
@@ -130,15 +145,15 @@ class AdminTrickController extends AbstractController
 				$imageFilename = $image_uploader->upload($imageFile);
 				$trick->addImage($image->setImageName($imageFilename));
 			}
+			$trick->setModifiedAt(new DateTime( 'now' ));
 
 			$this->getDoctrine()->getManager()->flush();
 
-			$this->addFlash('success', 'L\'image a bien été ajouté !');
+			$this->addFlash('success', 'Les modifications ont bien été pris en compte !');
 
 
-			return $this->render('admin/trick/edit.html.twig', [
-				'trick' => $trick,
-				'form' => $form->createView()
+			return $this->redirectToRoute('trick.edit', [
+				'slug' => $slug
 			]);
 		}
 
@@ -152,7 +167,7 @@ class AdminTrickController extends AbstractController
 	/**
 	 * @IsGranted("ROLE_USER")
 	 *
-	 * @Route ("/admin/delete/{id}", name="admin.trick.delete")
+	 * @Route ("/delete/{slug}", name="trick.delete")
 	 *
 	 * @param Trick $trick
 	 *
@@ -164,6 +179,6 @@ class AdminTrickController extends AbstractController
 		$manager->remove($trick);
 		$manager->flush();
 
-		return $this->redirectToRoute('admin.trick.index');
+		return $this->redirectToRoute('home');
 	}
 }

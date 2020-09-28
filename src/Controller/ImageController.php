@@ -18,7 +18,7 @@ class ImageController extends AbstractController
 {
 
 	/**
-	 * @Route ("/change-image/{slug}-{id}", name="change.image")
+	 * @Route ("/change-image/{id}-{slug}", name="change.image")
 	 * @IsGranted ("ROLE_USER")
 	 * @param $slug
 	 * @param Image $image
@@ -27,7 +27,7 @@ class ImageController extends AbstractController
 	 *
 	 * @return RedirectResponse|Response
 	 */
-	public function changeImage($slug, Image $image, Request $request, ImageUploader $image_uploader)
+	public function changeImage(Image $image, $slug, Request $request, ImageUploader $image_uploader)
 	{
 		$form = $this->createForm(ImageType::class, $image);
 		$form->handleRequest($request);
@@ -46,7 +46,7 @@ class ImageController extends AbstractController
 			$this->getDoctrine()->getManager()->flush();
 
 			$this->addFlash('success', 'L\'image a bien été ajouté !');
-			return $this->redirectToRoute('admin.trick.edit', ['id' => $slug]);
+			return $this->redirectToRoute('trick.edit', ['slug' => $slug]);
 		}
 
 		return $this->render('pages/changeImage.html.twig', [
@@ -56,14 +56,14 @@ class ImageController extends AbstractController
 	}
 
 	/**
-	 * @Route("/delete-image/{slug}-{id}", name="delete.image")
+	 * @Route("/delete-image/{id}-{slug}", name="delete.image")
 	 * @IsGranted ("ROLE_USER")
 	 * @param $slug
 	 * @param Image $image
 	 *
 	 * @return RedirectResponse
 	 */
-	public function deleteImage($slug, Image $image)
+	public function deleteImage(Image $image, $slug)
 	{
 		$name = $image->getImageName();
 		unlink($this->getParameter('images_directory').'/'.$name);
@@ -74,7 +74,7 @@ class ImageController extends AbstractController
 
 		$this->addFlash('success', 'L\'image a bien été supprimé !');
 
-		return $this->redirectToRoute('admin.trick.edit', ['id' => $slug]);
+		return $this->redirectToRoute('trick.edit', ['slug' => $slug]);
 	}
 
 }

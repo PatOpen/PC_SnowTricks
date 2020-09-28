@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Figure-{{ trick.title }}{{ trick.title }}{% endblock %}
+
+{% block Masthead %}
+
+{% include ('layout/header-trixk-show.html.twig') %}
+
+{% endblock %}
+
+{% block body %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success text-center">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+<section class="page-section bg-light" id="trick">
+
+    <div class="container text-center" id="div-media">
+        <button class="btn btn-primary" id="button-media">Afficher les médias</button><hr>
+    </div>
+    <div class="container">
+        <div class="row justify-content-center" id="media">
+            {% if trick.images %}
+                {% for image in trick.images %}
+                <div class="col-lg-4 col-sm-6 col-xs-12 text-center">
+                    <img src="{{ asset('uploads/trick/' ~ image.imageName) }}" alt="{{ image.altImage }}" class="img-thumbnail trick-image" >
+                </div>
+                {% endfor %}
+            {% endif %}
+            {% if trick.videos %}
+                {% for video in trick.videos %}
+                    <iframe src="{{ 'https://www.youtube.com/embed/' ~ video.urlVideo }}"
+                            seamless
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                            class="img-thumbnail embed-responsive-item trick-video"
+                            allowfullscreen>
+                    </iframe>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <hr>
+        <p>{{ trick.description | raw | nl2br }}</p>
+    </div>
+    <div class="container" id="comments">
+        <div class="row text-center justify-content-center">
+            <div class="col-sm-{% if trick.modifiedAt %}3{% else %}4{% endif %}">
+                <div class="card">
+                    <div class="card-header">Catégorie</div>
+                    <div class="card-body">
+                        <h6 class="card-title">{{ trick.category.name }}</h6>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-{% if trick.modifiedAt %}3{% else %}4{% endif %}">
+                <div class="card">
+                    <div class="card-header">Auteur</div>
+                    <div class="card-body">
+                        <h6 class="card-title">{{ trick.user.pseudo }}</h6>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-{% if trick.modifiedAt %}3{% else %}4{% endif %}">
+                <div class="card">
+                    <div class="card-header">Date de création</div>
+                    <div class="card-body">
+                        <time class="card-title">{{ trick.createAt | format_datetime(locale='fr') }}</time>
+                    </div>
+                </div>
+            </div>
+            {% if trick.modifiedAt %}
+                <div class="col-sm-3">
+                    <div class="card">
+                        <div class="card-header">Modifié le :</div>
+                        <div class="card-body">
+                            <time class="card-title">{{ trick.modifiedAt | format_datetime(locale='fr') }}</time>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div><hr>
+    </div>
+
+    {% if app.user %}
+        {% include('pages/comment-form.html.twig') %}
+    {% endif %}
+
+    <div class="container">
+
+        {% include('pages/comments-show.html.twig') %}
+        <div class="row justify-content-center">
+        {{ knp_pagination_render(comments) }}
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
+{% block javascripts %}{% endblock %}

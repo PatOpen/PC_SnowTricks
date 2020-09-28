@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block Masthead %}
+
+    {% include ('layout/header-change-image.html.twig') %}
+
+{% endblock %}
+
+{% block body %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success text-center">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('errors') %}
+        <div class="alert alert-danger text-center">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <section class="page-section bg-light">
+        <div class="container">
+            <div class="container text-center">
+                <h1 class="section-heading text-uppercase">Profile</h1><hr>
+            </div>
+
+            {{ form_start(form) }}
+            <div class="">
+                {{ form_errors(form) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_row(form.firstname, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="form-group">
+                {{ form_row(form.lastname, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="form-group">
+                {{ form_row(form.email, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="input-group mb-3 form-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="image">Télécharger</span>
+                </div>
+                <div class="custom-file">
+                    {{ form_row(form.avatar, {'attr': {'class': 'form-control custom-file-input', 'id': 'image', 'aria-describedby': 'image'}}) }}
+                    <label class="custom-file-label" for="image">Votre avatar (jpeg or png)</label>
+                </div>
+            </div>
+            <hr>
+            <div class="row justify-content-center">
+                <div class="button-change-image col-auto">
+                    <button class="btn btn-primary btn-sm text-uppercase" type="submit">Enregistrer</button>
+                </div>
+            </div>
+        </div>
+            {{ form_end(form) }}
+        </div>
+    </section>
+
+{% endblock %}
