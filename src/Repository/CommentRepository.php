@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Comment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -17,6 +18,20 @@ class CommentRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Comment::class);
+    }
+
+	/**
+	 * @param $id
+	 *
+	 * @return Query
+	 */
+    public function commentsForOneTrick($id): Query
+    {
+    	return $this->createQueryBuilder('c')
+		    ->andWhere('c.trick = :id')
+		    ->setParameter('id', $id)
+		    ->orderBy('c.create_at', 'DESC')
+		    ->getQuery();
     }
 
     // /**

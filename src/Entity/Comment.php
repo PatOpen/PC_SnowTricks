@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\CommentRepository;
+use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -36,19 +37,24 @@ class Comment
     /**
      * @ORM\Column(type="boolean")
      */
-	private ?bool $validation;
+	private ?bool $validation = false;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="comments")
      */
-	private ?User $user_id;
+	private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="comments")
      */
-	private ?Trick $trick_id;
+	private ?Trick $trick;
 
-    public function getId(): ?int
+	public function __construct()
+	{
+		$this->create_at = new DateTime( 'now' );
+	}
+
+	public function getId(): ?int
     {
         return $this->id;
     }
@@ -101,26 +107,31 @@ class Comment
         return $this;
     }
 
-    public function getUserId(): ?User
+    public function getUser(): User
     {
-        return $this->user_id;
+        return $this->user;
     }
 
-    public function setUserId(?User $user_id): self
+	/**
+	 * @param ?User $user
+	 *
+	 * @return $this
+	 */
+	public function setUser(?User $user): ?self
     {
-        $this->user_id = $user_id;
+        $this->user = $user;
 
         return $this;
     }
 
-    public function getTrickId(): ?Trick
+    public function getTrick(): Trick
     {
-        return $this->trick_id;
+        return $this->trick;
     }
 
-    public function setTrickId(?Trick $trick_id): self
+    public function setTrick(Trick $trick): self
     {
-        $this->trick_id = $trick_id;
+        $this->trick = $trick;
 
         return $this;
     }

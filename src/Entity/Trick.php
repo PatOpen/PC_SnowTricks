@@ -8,9 +8,11 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=TrickRepository::class)
+ * @UniqueEntity(fields={"title"}, message="Ce titre existe déja !")
  */
 class Trick
 {
@@ -42,25 +44,36 @@ class Trick
 	private ?DateTimeInterface $modified_at;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity=user::class, inversedBy="tricks")
+	 * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tricks", cascade={"persist"})
 	 * @ORM\JoinColumn(nullable=false)
 	 */
-	private ?user $user_id;
+	private $user;
 
 	/**
-	 * @ORM\OneToMany(targetEntity=Image::class, mappedBy="trick_id")
+	 * @ORM\OneToMany(targetEntity=Image::class, mappedBy="trick", orphanRemoval=true, cascade={"persist", "remove"})
 	 */
-	private ArrayCollection $images;
+	private Collection $images;
 
 	/**
-	 * @ORM\OneToMany(targetEntity=Video::class, mappedBy="trick_id")
+	 * @ORM\OneToMany(targetEntity=Video::class, mappedBy="trick", orphanRemoval=true, cascade={"persist", "remove"})
 	 */
-	private ArrayCollection $videos;
+	private Collection $videos;
 
 	/**
-	 * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick_id")
+	 * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick", orphanRemoval=true, cascade={"persist", "remove"})
+	 * @ORM\OrderBy({"create_at"="DESC"})
 	 */
-	private ArrayCollection $comments;
+	private Collection $comments;
+
+	/**
+	 * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="trick")
+	 */
+	private $category;
+
+	/**
+	 * @ORM\Column(type="string", length=255, nullable=false, unique=true)
+	 */
+	private $slug;
 
 	public function __construct()
 	{
@@ -123,14 +136,22 @@ class Trick
 		return $this;
 	}
 
-	public function getUserId(): ?user
+	/**
+	 * @return User
+	 */
+	public function getUser(): User
 	{
-		return $this->user_id;
+		return $this->user;
 	}
 
-	public function setUserId( ?user $user_id ): self
+	/**
+	 * @param ?User $user
+	 *
+	 * @return $this
+	 */
+	public function setUser( ?User $user ): ?self
 	{
-		$this->user_id = $user_id;
+		$this->user = $user;
 
 		return $this;
 	}
@@ -148,7 +169,7 @@ class Trick
 		if ( ! $this->images->contains( $image ) )
 		{
 			$this->images[] = $image;
-			$image->setTrickId( $this );
+			$image->setTrick( $this );
 		}
 
 		return $this;
@@ -160,9 +181,9 @@ class Trick
 		{
 			$this->images->removeElement( $image );
 			// set the owning side to null (unless already changed)
-			if ( $image->getTrickId() === $this )
+			if ( $image->getTrick() === $this )
 			{
-				$image->setTrickId( null );
+				$image->setTrick( null );
 			}
 		}
 
@@ -182,7 +203,7 @@ class Trick
 		if ( ! $this->videos->contains( $video ) )
 		{
 			$this->videos[] = $video;
-			$video->setTrickId( $this );
+			$video->setTrick( $this );
 		}
 
 		return $this;
@@ -194,9 +215,9 @@ class Trick
 		{
 			$this->videos->removeElement( $video );
 			// set the owning side to null (unless already changed)
-			if ( $video->getTrickId() === $this )
+			if ( $video->getTrick() === $this )
 			{
-				$video->setTrickId( null );
+				$video->setTrick( null );
 			}
 		}
 
@@ -211,12 +232,17 @@ class Trick
 		return $this->comments;
 	}
 
+	/**
+	 * @param Comment $comment
+	 *
+	 * @return $this
+	 */
 	public function addComment( Comment $comment ): self
 	{
 		if ( ! $this->comments->contains( $comment ) )
 		{
 			$this->comments[] = $comment;
-			$comment->setTrickId( $this );
+			$comment->setTrick( $this );
 		}
 
 		return $this;
@@ -228,11 +254,35 @@ class Trick
 		{
 			$this->comments->removeElement( $comment );
 			// set the owning side to null (unless already changed)
-			if ( $comment->getTrickId() === $this )
+			if ( $comment->getTrick() === $this )
 			{
-				$comment->setTrickId( null );
+				$comment->setTrick( null );
 			}
 		}
+
+		return $this;
+	}
+
+	public function getCategory(): ?Category
+	{
+		return $this->category;
+	}
+
+	public function setCategory( ?Category $category ): self
+	{
+		$this->category = $category;
+
+		return $this;
+	}
+
+	public function getSlug(): ?string
+	{
+		return $this->slug;
+	}
+
+	public function setSlug( string $slug ): self
+	{
+		$this->slug = $slug;
 
 		return $this;
 	}

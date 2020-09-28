@@ -18,35 +18,18 @@ class Video
 	private ?int $id;
 
     /**
-     * @ORM\Column(type="string", length=100, nullable=true)
-     */
-	private ?string $alt_video;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
 	private ?string $url_video;
 
     /**
-     * @ORM\ManyToOne(targetEntity=trick::class, inversedBy="videos")
+     * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="videos")
      */
-	private ?trick $trick_id;
+	private ?trick $trick;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getAltVideo(): ?string
-    {
-        return $this->alt_video;
-    }
-
-    public function setAltVideo(?string $alt_video): self
-    {
-        $this->alt_video = $alt_video;
-
-        return $this;
     }
 
     public function getUrlVideo(): ?string
@@ -54,6 +37,11 @@ class Video
         return $this->url_video;
     }
 
+	/**
+	 * @param string $url_video
+	 *
+	 * @return $this
+	 */
     public function setUrlVideo(string $url_video): self
     {
         $this->url_video = $url_video;
@@ -61,14 +49,14 @@ class Video
         return $this;
     }
 
-    public function getTrickId(): ?trick
+    public function getTrick(): ?trick
     {
-        return $this->trick_id;
+        return $this->trick;
     }
 
-    public function setTrickId(?trick $trick_id): self
+    public function setTrick(?trick $trick): self
     {
-        $this->trick_id = $trick_id;
+        $this->trick = $trick;
 
         return $this;
     }

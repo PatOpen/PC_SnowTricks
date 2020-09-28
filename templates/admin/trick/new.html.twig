@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer une figure{% endblock %}
+
+{% block Masthead %}
+
+    {% include ('layout/header-change-image.html.twig') %}
+
+{% endblock %}
+
+{% block body %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success text-center">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {# <button class="btn display-medias" data-action="show-medias">Afficher les photos & videos</button> #}
+    <section class="page-section bg-light" id="trick">
+        <div class="container">
+            <div class="container text-center">
+                <h1 class="section-heading text-uppercase">Créer une figure</h1><hr>
+            </div>
+            {{ form_start(form) }}
+            {{ form_errors(form, {'attr': {'class': 'p-3 mb-2 bg-danger text-white'}}) }}
+            <div class="form-group">
+                {{ form_row(form.videos) }}
+            </div>
+            <div class="input-group mb-3 form-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="image">Télécharger</span>
+                </div>
+                <div class="custom-file">
+                    {{ form_row(form.image, {'attr': {'class': 'form-control custom-file-input', 'id': 'image', 'aria-describedby': 'image'}}) }}
+                    <label class="custom-file-label" for="image">Ajoutez une image (jpeg or png)</label>
+                </div>
+            </div>
+            <hr>
+        </div>
+        <hr>
+        <div class="container">
+            <div class="row justify-content-left">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{ form_row(form.title, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        {{ form_row(form.description, {'attr': {'class': 'form-control', 'rows': '10'}}) }}
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        {{ form_row(form.category, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-end">
+                <div class="button-change-image col-auto">
+                    <button class="btn btn-primary btn-sm text-uppercase" type="submit">Enregistrer</button>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+
+    </section>
+
+{% endblock %}
+

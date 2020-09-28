@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block Masthead %}
+
+    {% include ('layout/header-change-image.html.twig') %}
+
+{% endblock %}
+
+{% block body %}
+    <section class="page-section">
+        <div class="container text-center">
+            <h1 class="section-heading text-uppercase">Modifier une vidéo</h1><hr>
+        </div>
+        <div class="container">
+            <div class="card">
+                <div class="row no-gutters">
+                    <div class="col-md-6">
+                        <iframe src="{{ 'https://www.youtube.com/embed/' ~ video.urlVideo }}" frameborder="0"
+                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                class="trick-video img-thumbnail"
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-body text-center">
+                            {{ form_start(form) }}
+                            <div class="form-group">
+                                {{ form_row(form.urlVideo, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                            <div class="text-center col col-sm-auto button-change-image">
+                                <button class="btn btn-primary btn-sm text-uppercase" type="submit">Enregistrer</button>
+                            </div>
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

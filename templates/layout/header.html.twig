@@ -1,0 +1,16 @@
+<header class="masthead">
+    <div class="container">
+        <div class="masthead-subheading">Bienvenue sur SnowTrick</div>
+        <div class="masthead-heading text-uppercase">La référence des figures de snowboard</div>
+        {% if app.user %}
+        <div class="masthead text-center">
+            <a href="{{ path('trick.new') }}" class="btn btn-primary btn-xl text-uppercase" type="submit">Créer
+                une figure</a>
+        </div>
+        {% endif %}
+        <div class="masthead arrow-masthead">
+            <a class="js-scroll-trigger" href="#trick"><i class="fas fa-arrow-down fa-3x"></i></a>
+        </div>
+    </div>
+
+</header>

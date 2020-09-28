@@ -1,0 +1,35 @@
+{% for trick in tricks %}
+    <div class="col-lg-4 col-sm-6 mb-4">
+        <div class="trick-item">
+            <a class="trick-link" href="{{ path('trick.show', {slug: trick.slug}) }}">
+                <div class="trick-hover">
+                    <div class="trick-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                </div>
+                <img class="img-trick-home"
+                     src="{% if trick.images is empty %}{{ asset('assets/img/snow-default.jpg') }}{% else %}{{ asset('uploads/trick/' ~ trick.images.0.imageName) }}{% endif %}"
+                     alt="{% if trick.images is empty %}Image figure snowboard{% else %}{{ trick.images.0.altImage }}{% endif %}"/>
+            </a>
+            <div class="trick-caption">
+                <div class="trick-caption-heading">
+                    <a href="{{ path('trick.show', {slug: trick.slug}) }}">
+                        {{ trick.title }}
+                    </a>
+                </div>
+                <hr>
+                {% if app.user == trick.user or is_granted('ROLE_ADMIN')%}
+                    <span class="span-icon" id="modifier">
+                        <a href="{{ path('trick.edit', {slug: trick.slug}) }}">
+                            <i class="far fa-edit"></i>
+                        </a>
+                    </span>
+                    <span class="span-icon" id="supprimer">
+                        <a href="{{ path('trick.delete', {slug: trick.slug}) }}"
+                           onclick="return confirm('Voulez-vous vraiment supprimer cette figure ?')">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endfor %}
