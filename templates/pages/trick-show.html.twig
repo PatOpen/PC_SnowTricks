@@ -24,8 +24,8 @@
         <div class="row justify-content-center" id="media">
             {% if trick.images %}
                 {% for image in trick.images %}
-                <div class="col-lg-4 col-sm-6 col-xs-12">
-                    <img src="{{ asset('uploads/trick/' ~ image.imageName) }}" alt="{{ image.altImage }}" class="img-thumbnail">
+                <div class="col-lg-4 col-sm-6 col-xs-12 text-center">
+                    <img src="{{ asset('uploads/trick/' ~ image.imageName) }}" alt="{{ image.altImage }}" class="img-thumbnail trick-image" >
                 </div>
                 {% endfor %}
             {% endif %}
@@ -34,7 +34,7 @@
                     <iframe src="{{ 'https://www.youtube.com/embed/' ~ video.urlVideo }}"
                             seamless
                             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                            class="img-thumbnail embed-responsive-item"
+                            class="img-thumbnail embed-responsive-item trick-video"
                             allowfullscreen>
                     </iframe>
                 {% endfor %}
@@ -92,12 +92,6 @@
         <div class="row justify-content-center">
         {{ knp_pagination_render(comments) }}
         </div>
-        {#
-              <div class="loader-container col-sm-12 d-flex justify-content-center" id="loader">
-                    <button class="btn btn-outline-primary loader-btn">
-                        Voir plus <i class="fas fa-arrow-down"></i><i class="fa fa-spinner fa-pulse fa-fw"></i>
-                    </button>
-                </div>#}
 
     </div>
 
