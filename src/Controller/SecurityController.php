@@ -55,6 +55,8 @@ class SecurityController extends AbstractController
 
 			$mailer->send( $email );
 
+			$this->addFlash('success', 'Un email vous a été envoyé pour activer votre compte !');
+
 			return $this->redirectToRoute( 'login' );
 		}
 
