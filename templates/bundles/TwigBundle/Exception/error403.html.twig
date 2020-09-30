@@ -1,0 +1,14 @@
+{% extends"base.html.twig" %}
+
+{% block title %}Erreur 403{% endblock %}
+
+{% block Masthead %}
+
+    <header class="masthead" style="height: 100vh;background-image: url('{{ asset('assets/img/map-image.jpeg') }}')">
+        <div class="container" style="padding-top: 8rem">
+            <div class="masthead-subheading">Code de l'erreur: {{ status_code }}</div>
+            <div class="masthead-heading">Accès refusé ! Vous n'avez pas la permission de voir cette page</div>
+        </div>
+    </header>
+
+{% endblock %}
