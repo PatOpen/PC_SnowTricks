@@ -75,74 +75,79 @@ class Trick
 	 */
 	private $slug;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $banner;
+
 	public function __construct()
-	{
-		$this->create_at = new DateTime( 'now' );
-		$this->images    = new ArrayCollection();
-		$this->videos    = new ArrayCollection();
-		$this->comments  = new ArrayCollection();
-	}
+         	{
+         		$this->create_at = new DateTime( 'now' );
+         		$this->images    = new ArrayCollection();
+         		$this->videos    = new ArrayCollection();
+         		$this->comments  = new ArrayCollection();
+         	}
 
 	public function getId(): ?int
-	{
-		return $this->id;
-	}
+         	{
+         		return $this->id;
+         	}
 
 	public function getTitle(): ?string
-	{
-		return $this->title;
-	}
+         	{
+         		return $this->title;
+         	}
 
 	public function setTitle( string $title ): self
-	{
-		$this->title = $title;
-
-		return $this;
-	}
+         	{
+         		$this->title = $title;
+         
+         		return $this;
+         	}
 
 	public function getDescription(): ?string
-	{
-		return $this->description;
-	}
+         	{
+         		return $this->description;
+         	}
 
 	public function setDescription( string $description ): self
-	{
-		$this->description = $description;
-
-		return $this;
-	}
+         	{
+         		$this->description = $description;
+         
+         		return $this;
+         	}
 
 	public function getCreateAt(): ?DateTimeInterface
-	{
-		return $this->create_at;
-	}
+         	{
+         		return $this->create_at;
+         	}
 
 	public function setCreateAt( DateTimeInterface $create_at ): self
-	{
-		$this->create_at = $create_at;
-
-		return $this;
-	}
+         	{
+         		$this->create_at = $create_at;
+         
+         		return $this;
+         	}
 
 	public function getModifiedAt(): ?DateTimeInterface
-	{
-		return $this->modified_at;
-	}
+         	{
+         		return $this->modified_at;
+         	}
 
 	public function setModifiedAt( ?DateTimeInterface $modified_at ): self
-	{
-		$this->modified_at = $modified_at;
-
-		return $this;
-	}
+         	{
+         		$this->modified_at = $modified_at;
+         
+         		return $this;
+         	}
 
 	/**
 	 * @return User
 	 */
 	public function getUser(): User
-	{
-		return $this->user;
-	}
+         	{
+         		return $this->user;
+         	}
 
 	/**
 	 * @param ?User $user
@@ -150,87 +155,87 @@ class Trick
 	 * @return $this
 	 */
 	public function setUser( ?User $user ): ?self
-	{
-		$this->user = $user;
-
-		return $this;
-	}
+         	{
+         		$this->user = $user;
+         
+         		return $this;
+         	}
 
 	/**
 	 * @return Collection|Image[]
 	 */
 	public function getImages(): Collection
-	{
-		return $this->images;
-	}
+         	{
+         		return $this->images;
+         	}
 
 	public function addImage( Image $image ): self
-	{
-		if ( ! $this->images->contains( $image ) )
-		{
-			$this->images[] = $image;
-			$image->setTrick( $this );
-		}
-
-		return $this;
-	}
+         	{
+         		if ( ! $this->images->contains( $image ) )
+         		{
+         			$this->images[] = $image;
+         			$image->setTrick( $this );
+         		}
+         
+         		return $this;
+         	}
 
 	public function removeImage( Image $image ): self
-	{
-		if ( $this->images->contains( $image ) )
-		{
-			$this->images->removeElement( $image );
-			// set the owning side to null (unless already changed)
-			if ( $image->getTrick() === $this )
-			{
-				$image->setTrick( null );
-			}
-		}
-
-		return $this;
-	}
+         	{
+         		if ( $this->images->contains( $image ) )
+         		{
+         			$this->images->removeElement( $image );
+         			// set the owning side to null (unless already changed)
+         			if ( $image->getTrick() === $this )
+         			{
+         				$image->setTrick( null );
+         			}
+         		}
+         
+         		return $this;
+         	}
 
 	/**
 	 * @return Collection|Video[]
 	 */
 	public function getVideos(): Collection
-	{
-		return $this->videos;
-	}
+         	{
+         		return $this->videos;
+         	}
 
 	public function addVideo( Video $video ): self
-	{
-		if ( ! $this->videos->contains( $video ) )
-		{
-			$this->videos[] = $video;
-			$video->setTrick( $this );
-		}
-
-		return $this;
-	}
+         	{
+         		if ( ! $this->videos->contains( $video ) )
+         		{
+         			$this->videos[] = $video;
+         			$video->setTrick( $this );
+         		}
+         
+         		return $this;
+         	}
 
 	public function removeVideo( Video $video ): self
-	{
-		if ( $this->videos->contains( $video ) )
-		{
-			$this->videos->removeElement( $video );
-			// set the owning side to null (unless already changed)
-			if ( $video->getTrick() === $this )
-			{
-				$video->setTrick( null );
-			}
-		}
-
-		return $this;
-	}
+         	{
+         		if ( $this->videos->contains( $video ) )
+         		{
+         			$this->videos->removeElement( $video );
+         			// set the owning side to null (unless already changed)
+         			if ( $video->getTrick() === $this )
+         			{
+         				$video->setTrick( null );
+         			}
+         		}
+         
+         		return $this;
+         	}
 
 	/**
 	 * @return Collection|Comment[]
 	 */
 	public function getComments(): Collection
-	{
-		return $this->comments;
-	}
+         	{
+         		return $this->comments;
+         	}
 
 	/**
 	 * @param Comment $comment
@@ -238,52 +243,64 @@ class Trick
 	 * @return $this
 	 */
 	public function addComment( Comment $comment ): self
-	{
-		if ( ! $this->comments->contains( $comment ) )
-		{
-			$this->comments[] = $comment;
-			$comment->setTrick( $this );
-		}
-
-		return $this;
-	}
+         	{
+         		if ( ! $this->comments->contains( $comment ) )
+         		{
+         			$this->comments[] = $comment;
+         			$comment->setTrick( $this );
+         		}
+         
+         		return $this;
+         	}
 
 	public function removeComment( Comment $comment ): self
-	{
-		if ( $this->comments->contains( $comment ) )
-		{
-			$this->comments->removeElement( $comment );
-			// set the owning side to null (unless already changed)
-			if ( $comment->getTrick() === $this )
-			{
-				$comment->setTrick( null );
-			}
-		}
-
-		return $this;
-	}
+         	{
+         		if ( $this->comments->contains( $comment ) )
+         		{
+         			$this->comments->removeElement( $comment );
+         			// set the owning side to null (unless already changed)
+         			if ( $comment->getTrick() === $this )
+         			{
+         				$comment->setTrick( null );
+         			}
+         		}
+         
+         		return $this;
+         	}
 
 	public function getCategory(): ?Category
-	{
-		return $this->category;
-	}
+         	{
+         		return $this->category;
+         	}
 
 	public function setCategory( ?Category $category ): self
-	{
-		$this->category = $category;
-
-		return $this;
-	}
+         	{
+         		$this->category = $category;
+         
+         		return $this;
+         	}
 
 	public function getSlug(): ?string
-	{
-		return $this->slug;
-	}
+         	{
+         		return $this->slug;
+         	}
 
 	public function setSlug( string $slug ): self
-	{
-		$this->slug = $slug;
+         	{
+         		$this->slug = $slug;
+         
+         		return $this;
+         	}
 
-		return $this;
-	}
+    public function getBanner(): ?string
+    {
+        return $this->banner;
+    }
+
+    public function setBanner(?string $banner): self
+    {
+        $this->banner = $banner;
+
+        return $this;
+    }
 }
