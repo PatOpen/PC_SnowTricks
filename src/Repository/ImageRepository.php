@@ -19,6 +19,16 @@ class ImageRepository extends ServiceEntityRepository
         parent::__construct($registry, Image::class);
     }
 
+	public function numberTrickImages($trick)
+	{
+		return $this->createQueryBuilder('i')
+			->andWhere('i.trick= :trick')
+			->setParameter('trick', $trick)
+		    ->select('count(i.trick)')
+		    ->getQuery()
+		    ->getSingleScalarResult();
+	}
+
 
     // /**
     //  * @return Image[] Returns an array of Image objects

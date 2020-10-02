@@ -7,6 +7,7 @@ use App\Entity\Image;
 use App\Entity\Trick;
 use App\Entity\Video;
 use App\Form\TrickType;
+use App\Repository\ImageRepository;
 use App\Repository\TrickRepository;
 use App\Service\ImageUploader;
 use App\Service\SluggFast;
@@ -73,7 +74,7 @@ class AdminTrickController extends AbstractController
 
 			$videoUrl = $form->get('videos')->getData();
 
-			if (empty($videoUrl)){
+			if ($videoUrl){
 				$videoId = explode('=', $videoUrl);
 				$videoName = $videoId[1];
 				$trick->addVideo($video->setUrlVideo($videoName));
@@ -84,6 +85,7 @@ class AdminTrickController extends AbstractController
 			if ($imageFile){
 				$imageFilename = $image_uploader->upload($imageFile);
 				$trick->addImage($image->setImageName($imageFilename));
+				$trick->setBanner($imageFilename);
 			}
 			$trick->setUser( $this->getUser());
 
@@ -105,16 +107,17 @@ class AdminTrickController extends AbstractController
 	/**
 	 * @IsGranted("ROLE_USER")
 	 *
-	 * @Route("/modifier-figure/{slug}", name="trick.edit")
-	 *
+	 * @Route("/modifier-figure/{slug}", name="trick.edit")	 *
 	 *
 	 * @param Trick $trick
 	 * @param Request $request
 	 * @param ImageUploader $image_uploader
 	 *
+	 * @param ImageRepository $repository
+	 *
 	 * @return Response
 	 */
-	public function edit(Trick $trick, Request $request, ImageUploader $image_uploader)
+	public function edit(Trick $trick, Request $request, ImageUploader $image_uploader, ImageRepository $repository)
 	{
 		$video = new Video();
 		$image = new Image();
@@ -144,6 +147,11 @@ class AdminTrickController extends AbstractController
 			if ($imageFile){
 				$imageFilename = $image_uploader->upload($imageFile);
 				$trick->addImage($image->setImageName($imageFilename));
+
+				$imageCount = $repository->numberTrickImages($trick);
+				if ($imageCount === 0){
+					$trick->setBanner($imageFilename);
+				}
 			}
 			$trick->setModifiedAt(new DateTime( 'now' ));
 
@@ -160,6 +168,65 @@ class AdminTrickController extends AbstractController
 		return $this->render('admin/trick/edit.html.twig', [
 			'trick' => $trick,
 			'form' => $form->createView()
+		]);
+	}
+
+	/**
+	 *@IsGranted("ROLE_USER")
+	 *
+	 * @Route ("/modifier-figure/banner/{slug}", name="trick.banner")	 *
+	 * @param Trick $trick
+	 *
+	 * @return Response
+	 */
+	public function banner(Trick $trick)
+	{
+		return $this->render('admin/trick/banner.html.twig', [
+			'trick' => $trick
+		]);
+
+	}
+
+	/**
+	 *@IsGranted("ROLE_USER")
+	 *
+	 * @Route ("/modifier-figure/banner/{slug}/{name}", name="trick.banner.edit")
+	 * @param Trick $trick
+	 * @param $name
+	 *
+	 * @return RedirectResponse
+	 */
+	public function editBanner(Trick $trick, $name)
+	{
+		$trick->setBanner($name);
+
+		$this->getDoctrine()->getManager()->flush();
+
+		$this->addFlash('success', 'L\'image à la une a bien été changé !');
+
+		return $this->redirectToRoute('trick.edit', [
+			'slug' => $trick->getSlug()
+		]);
+	}
+
+	/**
+	 * @IsGranted("ROLE_USER")
+	 *
+	 * @Route ("/modifier-figure/banner-delete/{slug}", name="trick.banner.delete")
+	 * @param Trick $trick
+	 *
+	 * @return RedirectResponse
+	 */
+	public function deleteBanner(Trick $trick)
+	{
+		$trick->setBanner(null);
+
+		$this->getDoctrine()->getManager()->flush();
+
+		$this->addFlash('success', 'L\'image à la une a bien été supprimé !');
+
+		return $this->redirectToRoute('trick.edit', [
+			'slug' => $trick->getSlug()
 		]);
 	}
 
